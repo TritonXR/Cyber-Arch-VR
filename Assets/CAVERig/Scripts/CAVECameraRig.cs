@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class CAVECameraRig : MonoBehaviour
 {
+    // Whether or not there should be a raycast from the viewpoint position.
+    [SerializeField] private bool enableRaycast = false;
 
-    [SerializeField]
-    private bool enableRaycast = true;
-
-    [SerializeField]
-    private Object screenPrefab;
+    // Prefab of a single CAVE screen.
+    [SerializeField] private Object screenPrefab;
 
     // Static bool to keep track of whether or not we're in 3D mode.
     public static bool is3D = false;
@@ -61,44 +60,54 @@ public class CAVECameraRig : MonoBehaviour
     void Start()
     {
 
-        Debug.Log("Object", this);
+        // Set up two lists for cameras.
         leftEyeCameras = new List<Camera>();
         rightEyeCameras = new List<Camera>();
 
+        //Create the CAVE screens.
         SetupScreens();
 
+        // Activate CAVE screens.
         ActivateDisplays();
 
+        // Make sure the cameras have this as a parent.
         cameraRigTransform = this.transform;
 
+        // Set the cameras to default positions.
         ResetCameraPositions();
     }
 
     private void SetupScreens()
     {
 
+        // Get the screen config loader and load the CAVE screens.
         ScreenConfigLoader screenLoader = GetComponentInChildren<ScreenConfigLoader>();
         screenLoader.LoadScreenConfig();
 
+        // Get a list of all screens found in the config.
         List<CAVEScreenConfig> screens = screenLoader.screens;
 
+        // Set up GameObjects for the screens.
         GameObject leftEyeCameraParent = new GameObject("Left Eye Cameras");
         GameObject rightEyeCameraParent = new GameObject("Right Eye Cameras");
 
+        // Set up the cameras in the hierarchy. Make sure their parents are the left/right camera objects.
         leftEyeCameraParent.transform.parent = viewpoint.transform;
         rightEyeCameraParent.transform.parent = viewpoint.transform;
 
+        // Set camera parents in the same position and rotation.
         leftEyeCameraParent.transform.localPosition = Vector3.zero;
         rightEyeCameraParent.transform.localPosition = Vector3.zero;
-
         leftEyeCameraParent.transform.localRotation = Quaternion.identity;
         rightEyeCameraParent.transform.localRotation = Quaternion.identity;
-
+        
+        // Create a parent for the screen planes.
         GameObject screenPlanes = new GameObject("Screen Planes");
         screenPlanes.transform.parent = this.transform;
         screenPlanes.transform.localPosition = Vector3.zero;
         screenPlanes.transform.localRotation = Quaternion.identity;
 
+        // Iterate through all screens found in the config and load them.
         for (int i = 0; i < screens.Count; i++)
         {
 
@@ -177,14 +186,18 @@ public class CAVECameraRig : MonoBehaviour
                 newRightCam.rect = new Rect(0.0f, 0.5f, 1.0f, 0.5f);
                 newLeftCam.rect = new Rect(0.0f, 0.5f, 0.0f, 0.5f);
             }
-
+            
+            // Set the parents of each camera.
             newLeftCam.transform.parent = leftEyeCameraParent.transform;
             newRightCam.transform.parent = rightEyeCameraParent.transform;
+
+            // Add these cameras to the list
             leftEyeCameras.Add(newLeftCam);
             rightEyeCameras.Add(newRightCam);
 
         }
 
+        // Set the position of the screen.
         Vector3 viewerPosition = screenLoader.viewerPosition.vector;
         float zVal = viewerPosition.z;
         viewerPosition.z = viewerPosition.y;
@@ -194,10 +207,11 @@ public class CAVECameraRig : MonoBehaviour
 
     }
 
+    // Creates a new CAVE camera to render to a specific screen.
     public Camera AddCamera(StereoTargetEyeMask targetEye, int displayIndex, Transform parent, GameObject targetPlane)
     {
 
-        // Create two cameras for that plane
+        // Create a camera and update it's settings.
         GameObject camera = new GameObject("Display" + displayIndex + "_" + targetEye.ToString());
         camera.transform.parent = parent;
         camera.transform.localPosition = Vector3.zero;
@@ -215,8 +229,6 @@ public class CAVECameraRig : MonoBehaviour
     // Toggles between 3D and 2D mode, moves cameras appropriately.
     public void Toggle3D()
     {
-
-        Debug.Log("Toggling 3D");
 
         if (is3D)
         {
@@ -244,7 +256,6 @@ public class CAVECameraRig : MonoBehaviour
             Toggle3D();
 
         }
-
     }
 
     // Activates each display currently hooked up to the computer, to ensure we're displaying across all screens.
