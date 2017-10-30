@@ -5,28 +5,30 @@ using System.IO;
 
 public class SiteManager : MonoBehaviour {
 
-    public List<CatalystSite> sites;
+    public string pathToDataJsonFile = "./Config_Files/site_data.json";
+
+    [HideInInspector]
+    public List<Site> sites;
     // private GameManager gameManager;
 
-    public static CatalystSite activeSite;
+    public static SiteElement activeSiteElement;
 
     void Start()
     {
-        LoadSites(GameManager.dataJsonFile);
+        LoadSites(pathToDataJsonFile);
     }
 
     public void LoadSites(string dataPath)
     {
-        // gameManager = GetComponentInParent<GameManager>();
 
-        if (!File.Exists(GameManager.dataJsonFile))
+        if (!File.Exists(pathToDataJsonFile))
         {
 
-            SerializableCatalystSites sampleSites = new SerializableCatalystSites();
+            SerializableSites sampleSites = new SerializableSites();
 
-            sampleSites.sites = new SerializableCatalystSite[1];
+            sampleSites.sites = new SerializableSite[1];
 
-            SerializableCatalystSite newSite = new SerializableCatalystSite();
+            SerializableSite newSite = new SerializableSite();
 
             // UC San Diego Lat/Lon as sample
             newSite.latitude = 32.8801f;
@@ -38,33 +40,35 @@ public class SiteManager : MonoBehaviour {
 
             string jsonText = JsonUtility.ToJson(sampleSites);
 
-            File.WriteAllText(GameManager.dataJsonFile, jsonText);
+            File.WriteAllText(pathToDataJsonFile, jsonText);
 
             return;
 
         }
 
-        string jsonString = File.ReadAllText(GameManager.dataJsonFile);
+        string jsonString = File.ReadAllText(pathToDataJsonFile);
 
-        SerializableCatalystSites siteData = JsonUtility.FromJson<SerializableCatalystSites>(jsonString);
+        SerializableSites siteData = JsonUtility.FromJson<SerializableSites>(jsonString);
 
         if (siteData.sites != null && siteData.sites.Length > 0)
         {
-            foreach (SerializableCatalystSite site in siteData.sites)
+            foreach (SerializableSite site in siteData.sites)
             {
 
-                GameObject newSiteObject = new GameObject();
+                GameObject newSiteObject = new GameObject(site.name);
                 newSiteObject.transform.parent = this.transform;
-                CatalystSite newSite = newSiteObject.AddComponent<CatalystSite>();
-                newSite.siteData = site;
+                Site newSite = newSiteObject.AddComponent<Site>();
+
+                newSite.InitializeSite(site);
+
                 sites.Add(newSite);
-                newSiteObject.name = newSite.siteName;
 
             }
         }
         else
         {
             Debug.LogErrorFormat("Error: No sites loaded. Please check the following file: {0}", GameManager.dataJsonFile);
+
             return;
         }
 
@@ -104,10 +108,10 @@ public class SiteManager : MonoBehaviour {
 
 	
     [System.Serializable]
-    private class SerializableCatalystSites
+    private class SerializableSites
     {
 
-        public SerializableCatalystSite[] sites;
+        public SerializableSite[] sites;
 
     }
 }

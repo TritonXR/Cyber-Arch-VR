@@ -7,10 +7,7 @@ public class ScreenConfigLoader : MonoBehaviour
 {
 
     [SerializeField]
-    private string filePath = "./";
-
-    [SerializeField]
-    private string fileName = "screenConfig.txt";
+    private string filePath = "./Config_Files/screen_config.txt";
 
     private List<CAVEPipeConfig> pipes = new List<CAVEPipeConfig>();
     private List<CAVEWindowConfig> windows = new List<CAVEWindowConfig>();
@@ -52,7 +49,7 @@ public class ScreenConfigLoader : MonoBehaviour
     {
 
         //get access to the contents of the config file
-        string text = File.ReadAllText(filePath + fileName);
+        string text = File.ReadAllText(filePath);
         Debug.Log("text is: " + text);
 
         return text;

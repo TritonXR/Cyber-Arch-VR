@@ -7,13 +7,11 @@ using UnityEngine.SceneManagement;
 
 public class CatalystSite : MonoBehaviour
 {
-
     public string siteName
     {
         get
         {
             return siteData.name;
-
         }
     }
 
@@ -22,10 +20,8 @@ public class CatalystSite : MonoBehaviour
 
     private Transform modelParent;
 
-
     public List<CatalystModel> sites3D;
     private int modelIndex = 0;
-
 
     [SerializeField] private float modelDistanceFromCam = 3.0f;
 
@@ -41,7 +37,7 @@ public class CatalystSite : MonoBehaviour
         if (caveCams == null || caveCams.Count == 0)
         {
 
-            yield return StartCoroutine(LoadCAVECams());
+            yield return RoutineRunner.instance.StartCoroutine(LoadCAVECams());
 
         }
 
@@ -53,7 +49,7 @@ public class CatalystSite : MonoBehaviour
         {
 
             caveCams[camIndex].Activate();
-            activeElement = caveCams[camIndex];
+            //activeElement = caveCams[camIndex];
 
         }
         else
@@ -88,7 +84,7 @@ public class CatalystSite : MonoBehaviour
             Debug.Log("Loading Models!");
             yield return null;
 
-            yield return StartCoroutine(Load3DSites());
+            yield return RoutineRunner.instance.StartCoroutine(Load3DSites());
 
         }
 
@@ -125,6 +121,7 @@ public class CatalystSite : MonoBehaviour
 
         }
         */
+        
     }
 
     public IEnumerator Hide3DSites()
@@ -147,7 +144,7 @@ public class CatalystSite : MonoBehaviour
     public void Select()
     {
 
-        SiteManager.activeSite = this;
+        //SiteManager.activeSite = this;
 
     }
 
@@ -155,7 +152,7 @@ public class CatalystSite : MonoBehaviour
     {
 
         DeactivateActiveElement();
-        SiteManager.activeSite = null;
+       // SiteManager.activeSite = null;
 
     }
 
@@ -173,7 +170,7 @@ public class CatalystSite : MonoBehaviour
             }
 
             caveCams[camIndex].Activate();
-            activeElement = caveCams[camIndex];
+            //activeElement = caveCams[camIndex];
 
         }
         else
@@ -246,7 +243,9 @@ public class CatalystSite : MonoBehaviour
                 Debug.LogFormat("Initializing pano {0} of {1}", i+1, siteData.panos.Length);
 
                 CAVECam newCam = gameObject.AddComponent<CAVECam>();
-                yield return newCam.Initialize(camJSON);
+                //yield return newCam.Initialize(camJSON);
+
+                yield return null;
 
                 caveCams.Add(newCam);
 
@@ -293,6 +292,7 @@ public class CatalystSite : MonoBehaviour
 
     }
 }
+
 
 
 [System.Serializable]

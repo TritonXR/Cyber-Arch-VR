@@ -5,7 +5,7 @@ using System.IO;
 using System.Drawing;
 using System;
 
-public class CAVECam : CatalystSiteElement
+public class CAVECam : SiteElement
 {
     public const string cacheLocation = GameManager.cacheDirectory + "/CAVECams";
 
@@ -27,24 +27,6 @@ public class CAVECam : CatalystSiteElement
     [SerializeField] private string defaultCamPath = "./defaultCam.json";
     [SerializeField] private string defaultLeftEyePath = "./leftEye.tif";
     [SerializeField] private string defaultRightEyePath = "./rightEye.tif";
-
-    protected override IEnumerator InitializeCoroutine(SerializableCatalystSiteElement siteData)
-    {
-
-        if (siteData is SerializableCAVECam)
-        {
-
-            yield return LoadCamFromJSON(siteData as SerializableCAVECam);
-
-        }
-        else
-        {
-
-            PrintIncorrectTypeError(siteData.name, "CAVECam");
-
-        }
-
-    }
 
     protected override IEnumerator ActivateCoroutine()
     {
@@ -103,8 +85,10 @@ public class CAVECam : CatalystSiteElement
         yield return null;
     }
 
-    public IEnumerator LoadCamFromJSON(SerializableCAVECam camData)
+    protected override IEnumerator LoadCoroutine()
     {
+
+        SerializableCAVECam camData = siteData as SerializableCAVECam;
 
         leftEyePath = camData.left_eye;
         rightEyePath = camData.right_eye;
@@ -177,6 +161,13 @@ public class CAVECam : CatalystSiteElement
         }
     }
 
+    protected override IEnumerator UnloadCoroutine()
+    {
+        leftEye = null;
+        rightEye = null;
+        yield return null;
+    }
+
     private IEnumerator LoadCamFromFile(string camJSONPath)
     {
 
@@ -230,8 +221,8 @@ public class CAVECam : CatalystSiteElement
             }
         }
 
-        StartCoroutine(LoadCamFromJSON(camFile));
-
+        siteData = camFile;
+        Load();
     }
 
     public IEnumerator GetTexturesFromCache(string filePath, List<Texture2D> textures)
@@ -490,7 +481,7 @@ public class CAVECam : CatalystSiteElement
 
 
 [System.Serializable]
-public class SerializableCAVECam : SerializableCatalystSiteElement
+public class SerializableCAVECam : SerializableSiteElement
 {
 
     public string left_eye;

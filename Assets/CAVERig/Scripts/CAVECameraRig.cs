@@ -43,16 +43,19 @@ public class CAVECameraRig : MonoBehaviour
     [HideInInspector]
     public CameraViewpoint viewpoint;
 
-    private static CAVECameraRig instance;
+    public static CAVECameraRig instance;
 
     // Called before first frame. Prepares the displays and loads cameras.
     private void Awake()
     {
         // Things here should only ever happen once.
-        if (instance == null)
+        if (instance != null)
         {
-            viewpoint = GetComponentInChildren<CameraViewpoint>();
+            GameObject.Destroy(instance.gameObject);
         }
+
+        instance = this;
+        viewpoint = GetComponentInChildren<CameraViewpoint>();
 
     }
 
