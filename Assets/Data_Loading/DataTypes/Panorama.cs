@@ -5,7 +5,7 @@ using System.IO;
 using System.Drawing;
 using System;
 
-public class CAVECam : SiteElement
+public class Panorama : SiteElement
 {
     public const string cacheLocation = GameManager.cacheDirectory + "/CAVECams";
 

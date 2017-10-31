@@ -13,7 +13,7 @@ public class SiteManager : MonoBehaviour {
 
     public static SiteElement activeSiteElement;
 
-    void Start()
+    void Awake()
     {
         LoadSites(pathToDataJsonFile);
     }

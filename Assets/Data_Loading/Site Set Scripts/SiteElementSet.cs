@@ -4,16 +4,30 @@ using UnityEngine;
 
 public abstract class SiteElementSet : MonoBehaviour
 {
+    private Site parentSite;
 
-    Site parentSite;
+    public string setType = "Unknown Type";
 
     public List<SiteElement> siteElements;
-    protected int activeElementIndex = 0;
+    protected int activeElementIndex = -1;
+
+    SiteElement activeElement = null;
+
+    private bool activated = false;
+
+    protected abstract SiteElement AddElementComponent(GameObject elementObject);
+    protected abstract string GetSetType();
 
     public void Initialize(SerializableSiteElement[] serializableSiteElements, Site parentSite)
     {
 
         this.parentSite = parentSite;
+        setType = GetSetType();
+
+
+        Debug.Log("Initializing " + setType + " for site " + parentSite.siteName);
+
+        siteElements = new List<SiteElement>();
 
         foreach (SerializableSiteElement element in serializableSiteElements)
         {
@@ -28,9 +42,8 @@ public abstract class SiteElementSet : MonoBehaviour
         }
     }
 
-    protected abstract SiteElement AddElementComponent (GameObject elementObject);
 
-    public GameObject CreateElementObject(string name)
+    protected GameObject CreateElementObject(string name)
     {
 
         GameObject newElement = new GameObject(name);
@@ -38,6 +51,38 @@ public abstract class SiteElementSet : MonoBehaviour
         newElement.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
 
         return newElement;
+
+    }
+
+    public Coroutine Activate()
+    {
+
+        if (!activated)
+        {
+            activated = true;
+            return NextElement();
+        }
+        else
+        {
+            Debug.LogWarning("This site element has already been activated. Please deactivate before trying to activate again", this.gameObject);
+        }
+
+        return null;
+
+    }
+
+    public Coroutine Deactivate()
+    {
+
+        activeElementIndex = -1;
+        activated = false;
+
+        if (activeElement)
+        {
+            return activeElement.Deactivate();
+        }
+
+        return null;
 
     }
 
@@ -71,7 +116,11 @@ public abstract class SiteElementSet : MonoBehaviour
         if (IsMultipleElements())
         {
 
-            yield return siteElements[activeElementIndex].Deactivate();
+            if (activeElement != null)
+            {
+                yield return activeElement.Deactivate();
+                activeElement = null;
+            }
 
             activeElementIndex += direction;
 
@@ -84,7 +133,9 @@ public abstract class SiteElementSet : MonoBehaviour
                 activeElementIndex = siteElements.Count - 1;
             }
 
-            yield return siteElements[activeElementIndex].Activate();
+            activeElement = siteElements[activeElementIndex];
+
+            yield return activeElement.Activate();
         }
 
     }

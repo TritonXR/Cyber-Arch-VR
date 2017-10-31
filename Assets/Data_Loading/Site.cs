@@ -5,13 +5,17 @@ using UnityEngine;
 public class Site : MonoBehaviour
 {
 
-    SerializableSite siteData;
+    public string siteName
+    {
+        get
+        {
+            return siteData.name;
+        }
+    }
 
-    SiteElementSet panos;
-    SiteElementSet videos;
-    SiteElementSet artifacts;
-    SiteElementSet images;
-    SiteElementSet sites3D;
+    private SerializableSite siteData;
+
+    public List<SiteElementSet> dataSets;
 
     public void InitializeSite(SerializableSite siteJSON)
     {
@@ -22,15 +26,27 @@ public class Site : MonoBehaviour
     public void InitializeSiteElements()
     {
 
-        GameObject panoSetObj = CreateElementSetObject("Panos");
-        panos = panoSetObj.AddComponent<PanoSet>();
-        panos.Initialize(siteData.panos, this);
+        dataSets = new List<SiteElementSet>();
 
+        if (siteData.panos != null && siteData.panos.Length > 0)
+        {
+            GameObject panoSetObj = CreateElementSetObject(PanoSet.elementString);
+            PanoSet panoSet = panoSetObj.AddComponent<PanoSet>();
+            panoSet.Initialize(siteData.panos, this);
+            dataSets.Add(panoSet);
+        }
 
-        //GameObject artifactSetObj = CreateElementSetObject("Artifacts");
-        //artifacts = artifactSetObj.AddComponent<ArtifactSet>();
+        if (siteData.models != null && siteData.models.Length > 0)
+        {
 
-        //GameObject site3DSetObj = CreateElementSetObject("3D Sites");
+            GameObject modelSetObj = CreateElementSetObject(ModelSet.elementString);
+            ModelSet modelSet = modelSetObj.AddComponent<ModelSet>();
+            modelSet.Initialize(siteData.models, this);
+            dataSets.Add(modelSet);
+
+        }
+
+        // TODO: More supported data types.
 
     }
 
@@ -56,9 +72,8 @@ public class SerializableSite
 
     public SerializableCAVECam[] panos;
     public SerializableVideo[] videos;
-    public SerializableModel[] artifacts;
-    public SerializableModel[] sites3D;
+    public SerializableModel[] models;
+    public Serializable3DSite[] sites3D;
     public SerializableImage[] images;
-    public SerializablePointCloud[] pointClouds;
 
 }

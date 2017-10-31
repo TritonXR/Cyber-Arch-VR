@@ -5,37 +5,15 @@ using UnityEngine;
 using System.IO;
 using System.Text;
 
-public class CatalystModel : CatalystSiteElement {
-
+public class Model : SiteElement
+{
     public GameObject model;
 
     private float rotationSpeed = 0.1f;
-
     private bool rotate = true;
-
-    public bool isSite = false;
-
-    protected override IEnumerator InitializeCoroutine(SerializableCatalystSiteElement siteData)
-    {
-
-        if (siteData is SerializableModel)
-        {
-
-            Debug.Log("Reached initialization!");
-            yield return null;
-
-            yield return StartCoroutine(LoadModel(siteData as SerializableModel));
-        }
-        else
-        {
-            PrintIncorrectTypeError(siteData.name, "Model");
-        }
-
-    }
 
     protected override IEnumerator ActivateCoroutine()
     {
-
         if (model != null)
         {
 
@@ -43,39 +21,22 @@ public class CatalystModel : CatalystSiteElement {
             yield return null;
 
         }
-
     }
 
     protected override IEnumerator DeactivateCoroutine()
     {
-
-        model.SetActive(false);
-
-        yield return null;
-
-
-    }
-
-    public void SetLocalPosition(Vector3 position)
-    {
-
-        model.transform.localPosition = position;
-
-    }
-
-    public void Update()
-    {
-
-        if (model != null && model.activeSelf && rotate && !isSite)
+        if (model != null)
         {
+            model.SetActive(false);
 
-            model.transform.Rotate(Vector3.up, rotationSpeed);
-
+            yield return null;
         }
     }
 
-    public IEnumerator LoadModel(SerializableModel modelData)
+    protected override IEnumerator LoadCoroutine()
     {
+        SerializableModel modelData = siteData as SerializableModel;
+
         GameObject pivot = new GameObject("Position Pivot");
 
         Debug.Log("Loading Model");
@@ -145,15 +106,14 @@ public class CatalystModel : CatalystSiteElement {
             yield break;
         }
 
-        if (isSite)
-        {
-            CenterModel(pivot);
-            FixModelRotation(pivot);
-        }
-
         model.SetActive(false);
+    }
 
-   }
+    protected override IEnumerator UnloadCoroutine()
+    {
+        throw new NotImplementedException();
+    }
+
 
     private void CenterModel(GameObject positionPivot)
     {
@@ -374,14 +334,12 @@ public class CatalystModel : CatalystSiteElement {
         }
         result(www.texture);
     }
-
-
 }
 
 [System.Serializable]
-public class SerializableModel : SerializableCatalystSiteElement
+public class SerializableModel : SerializableSiteElement
 {
-
     public string filePath;
-
 }
+
+
