@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Threading;
 using System;
 
-public class ImageToColorArrayConverter {
+public class ImagePieceToColorArray {
 
     Bitmap bitmap;
 
@@ -18,7 +18,7 @@ public class ImageToColorArrayConverter {
 
     public bool finished = false;
 
-    public ImageToColorArrayConverter(Bitmap originalImage, int startRow, int endRow)
+    public ImagePieceToColorArray(Bitmap originalImage, int startRow, int endRow)
     {
         bitmap = originalImage;
         this.startRow = startRow;
@@ -78,20 +78,4 @@ public class ImageToColorArrayConverter {
         return finalColorArray;
     }
 
-    public static UnityEngine.Color[] CombineColorArrays(List<ImageToColorArrayConverter> converters)
-    {
-
-        List<UnityEngine.Color> colorList = new List<UnityEngine.Color>();
-
-        for (int i = 0; i < converters.Count; i++)
-        {
-            UnityEngine.Color[] colorArray = converters[i].GetFinalArray();
-
-            colorList.AddRange(colorArray);
-
-        }
-
-        return colorList.ToArray();
-
-    }
 }

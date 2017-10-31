@@ -406,63 +406,35 @@ public class Panorama : SiteElement
     public IEnumerator LoadImagesAsTextures(List<Image> images, List<Texture2D> textures)
     {
 
-        int numThreadsPerImage = 10;
-
         Debug.Log("Starting threads to convert images");
         yield return null;
+
+        int numThreadsPerImage = 5;
+
+        List<ImageToColorArray> converters = new List<ImageToColorArray>();
 
         foreach (Image img in images)
         {
 
-            List<ImageToColorArrayConverter> converters = new List<ImageToColorArrayConverter>();
-            List<Thread> threads = new List<Thread>();
+            ImageToColorArray converter = new ImageToColorArray(new Bitmap(img), numThreadsPerImage);
+            converters.Add(converter);
 
-            Bitmap bitmap = new Bitmap(img);
+            ThreadPool.QueueUserWorkItem(new WaitCallback(state => converter.Convert()));
+          
+        }
 
-            int picHeight = bitmap.Height;
+        foreach (ImageToColorArray converter in converters)
+        {
 
-            for (int i = 0; i < numThreadsPerImage; i++)
+            while (!converter.IsFinished())
             {
-
-                int start = i * (picHeight / numThreadsPerImage);
-                int end = (i + 1) * (picHeight / numThreadsPerImage);
-
-                if (i == numThreadsPerImage-1)
-                {
-                    end = picHeight;
-                }
-
-                ImageToColorArrayConverter newConverter = new ImageToColorArrayConverter(new Bitmap(img), start, end);
-                converters.Add(newConverter);
-
-                ThreadPool.QueueUserWorkItem(new WaitCallback(state => newConverter.Convert()));
-
+                yield return null;
             }
 
-            Debug.Log("Waiting for converter threads to finish");
-            yield return null;
+            Texture2D finalTex = new Texture2D(converter.bitmap.Width, converter.bitmap.Height);
+            finalTex.SetPixels(converter.GetFinalArray());
+            textures.Add(finalTex);
 
-            foreach (ImageToColorArrayConverter converter in converters)
-            {
-                while (!converter.finished)
-                {
-                    yield return null;
-                }
-            }
-
-            Debug.Log("All converters finished! Setting pixels");
-            yield return null;
-
-            UnityEngine.Color[] finalColorArray = ImageToColorArrayConverter.CombineColorArrays(converters);
-            Texture2D newTex = new Texture2D(bitmap.Width, bitmap.Height);
-
-            newTex.SetPixels(finalColorArray);
-
-            Debug.Log("Set all pixels!");
-            yield return null;
-
-            textures.Add(newTex);
-        
         }
 
         /*
