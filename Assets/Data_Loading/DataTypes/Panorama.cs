@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System.Threading;
 using System.Drawing;
 using System;
 
 public class Panorama : SiteElement
 {
-    public const string cacheLocation = GameManager.cacheDirectory + "/CAVECams";
-
     public const int FRONT_INDEX = 0;
     public const int BACK_INDEX = 1;
     public const int UP_INDEX = 2;
@@ -21,8 +20,6 @@ public class Panorama : SiteElement
 
     public Material leftEye;
     public Material rightEye;
-
-    private string cacheDirectory;
 
     [SerializeField] private string defaultCamPath = "./defaultCam.json";
     [SerializeField] private string defaultLeftEyePath = "./leftEye.tif";
@@ -104,9 +101,10 @@ public class Panorama : SiteElement
 
             List<Texture2D> leftTextures = new List<Texture2D>();
             List<Texture2D> rightTextures = new List<Texture2D>();
-            
+
 
             // Stage 1: Load Textures
+            /*
             if (Directory.Exists(GetCacheDirectory(leftEyePath)))
             {
                 yield return StartCoroutine(GetTexturesFromCache(leftEyePath, leftTextures));
@@ -124,6 +122,10 @@ public class Panorama : SiteElement
             {
                 yield return StartCoroutine(GetTexturesFromTif(rightEyePath, rightTextures));
             }
+            */
+
+            yield return StartCoroutine(GetTexturesFromTif(leftEyePath, leftTextures));
+            yield return StartCoroutine(GetTexturesFromTif(rightEyePath, rightTextures));
 
             int leftTexSize = leftTextures[0].width;
             int rightTexSize = rightTextures[0].width;
@@ -225,6 +227,7 @@ public class Panorama : SiteElement
         Load();
     }
 
+    /*
     public IEnumerator GetTexturesFromCache(string filePath, List<Texture2D> textures)
     {
 
@@ -289,6 +292,7 @@ public class Panorama : SiteElement
 
         yield return null;
     }
+    */
 
     public IEnumerator GetTexturesFromTif(string tifPath, List<Texture2D> textures)
     {
@@ -303,10 +307,11 @@ public class Panorama : SiteElement
 
         yield return StartCoroutine(LoadImagesAsTextures(images, textures));
 
-        StartCoroutine(CacheTextures(textures, tifPath));
+        //StartCoroutine(CacheTextures(textures, tifPath));
 
     }
 
+    /*
     public static string GetCacheDirectory(string filePath)
     {
 
@@ -382,6 +387,7 @@ public class Panorama : SiteElement
 
         yield return null;
     }
+    */
 
     public IEnumerator LoadTifPages(string imagePath, List<Image> tifImages)
     {
@@ -389,28 +395,77 @@ public class Panorama : SiteElement
         Debug.Log("Loading Image As Textures: " + imagePath);
 
         TiffImage loadedTiff = new TiffImage(imagePath);
+        loadedTiff.SetTifPages();
+
+        tifImages.AddRange(loadedTiff.pages);
 
         yield return null;
 
-        Debug.LogFormat("Getting individual tif pages from {0}", imagePath);
-
-        for (int i = 0; i < loadedTiff.PageCount; i++)
-        {
-
-            string statusText = string.Format("Loading tif pages: \n{0} of {1}", i+1, loadedTiff.PageCount);
-
-            tifImages.Add(loadedTiff.GetTiffSpecificPage(i));
-
-            Debug.LogFormat("Loaded page {0} of the tif {1}", i, imagePath);
-
-            yield return null;
-
-        }
     }
 
     public IEnumerator LoadImagesAsTextures(List<Image> images, List<Texture2D> textures)
     {
 
+        int numThreadsPerImage = 10;
+
+        Debug.Log("Starting threads to convert images");
+        yield return null;
+
+        foreach (Image img in images)
+        {
+
+            List<ImageToColorArrayConverter> converters = new List<ImageToColorArrayConverter>();
+            List<Thread> threads = new List<Thread>();
+
+            Bitmap bitmap = new Bitmap(img);
+
+            int picHeight = bitmap.Height;
+
+            for (int i = 0; i < numThreadsPerImage; i++)
+            {
+
+                int start = i * (picHeight / numThreadsPerImage);
+                int end = (i + 1) * (picHeight / numThreadsPerImage);
+
+                if (i == numThreadsPerImage-1)
+                {
+                    end = picHeight;
+                }
+
+                ImageToColorArrayConverter newConverter = new ImageToColorArrayConverter(new Bitmap(img), start, end);
+                converters.Add(newConverter);
+
+                ThreadPool.QueueUserWorkItem(new WaitCallback(state => newConverter.Convert()));
+
+            }
+
+            Debug.Log("Waiting for converter threads to finish");
+            yield return null;
+
+            foreach (ImageToColorArrayConverter converter in converters)
+            {
+                while (!converter.finished)
+                {
+                    yield return null;
+                }
+            }
+
+            Debug.Log("All converters finished! Setting pixels");
+            yield return null;
+
+            UnityEngine.Color[] finalColorArray = ImageToColorArrayConverter.CombineColorArrays(converters);
+            Texture2D newTex = new Texture2D(bitmap.Width, bitmap.Height);
+
+            newTex.SetPixels(finalColorArray);
+
+            Debug.Log("Set all pixels!");
+            yield return null;
+
+            textures.Add(newTex);
+        
+        }
+
+        /*
         int pageNum = 0;
 
         foreach (Image img in images)
@@ -427,6 +482,8 @@ public class Panorama : SiteElement
 
             Debug.LogFormat("Copying tif page {0} to Texture", pageNum);
 
+            UnityEngine.Color[] pixelColors = new UnityEngine.Color[picWidth * picHeight];
+
             yield return null;
 
             for (int x = 0; x < picWidth; x++)
@@ -438,10 +495,22 @@ public class Panorama : SiteElement
                     System.Drawing.Color color = bitmap.GetPixel(x, y);
 
                     UnityEngine.Color newColor = new UnityEngine.Color(color.R / 255.0f, color.G / 255.0f, color.B / 255.0f);
-                    newTex.SetPixel(x, y, newColor);
+                    //newTex.SetPixel(x, y, newColor);
+                    pixelColors[(x * y) + x] = newColor;
+
+
+                    //Debug.LogFormat("Set pixel {0} {1} out of {2} {3}", x, y, picWidth, picHeight);
+
+                    //yield return null;
 
                 }
             }
+
+            Debug.Log("Done preparing color array. About to set pixels");
+
+            yield return null;
+
+            newTex.SetPixels(pixelColors);
 
             Debug.LogFormat("Done copying tif page {0}", pageNum);
 
@@ -452,8 +521,8 @@ public class Panorama : SiteElement
             textures.Add(newTex);
 
         }
+        */
     }
-
 
     public IEnumerator CreateCubemapFromTextures(List<Texture2D> textures, Cubemap newCubemap)
     {

@@ -2,6 +2,9 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class TiffImage
 {
@@ -31,6 +34,8 @@ public class TiffImage
         }
     }
 
+    public Image[] pages;
+
     // Return the memory stream of a specific page
     public Image GetTiffSpecificPage(int pageNumber)
     {
@@ -52,4 +57,23 @@ public class TiffImage
         }
     }
 
+    public void SetTifPages()
+    {
+
+        if (pages == null || pages.Length == 0)
+        {
+            pages = new Image[PageCount];
+
+            for (int i = 0; i < PageCount; i++)
+            {
+                Debug.LogFormat("Loading tif page {0} of {1}", i + 1, PageCount);
+
+                Image tifPage = GetTiffSpecificPage(i);
+                pages[i] = tifPage;
+
+                Debug.LogFormat("Loaded tif page {0} of {1}", i + 1, PageCount);  
+
+            }
+        }
+    }
 }
