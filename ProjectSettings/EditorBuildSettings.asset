@@ -8,3 +8,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Main.unity
     guid: 074ac179a77454043a50a76fdade71a3
+  - enabled: 1
+    path: Assets/ExploreVideo_Scene.unity
+    guid: 25c10cb4640ff6a4384f336e3d92f3b6
+  - enabled: 1
+    path: Assets/DataLoading.unity
+    guid: 8304884d7a1ccec48bdd3e7ad8c0b340
+  - enabled: 1
+    path: Assets/360ImageMenu_Scene.unity
+    guid: fabdab1df416e3a41a5deea2eaabcbc3
+  - enabled: 1
+    path: Assets/3DModelMenu_Scene.unity
+    guid: fb7896029b805c84ab9781b8eb103608
+  - enabled: 1
+    path: Assets/VideoMenu_Scene.unity
+    guid: 00000000000000000000000000000000
