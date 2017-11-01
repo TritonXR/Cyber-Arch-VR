@@ -51,7 +51,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1999573188471842}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -185.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4890089669483568}
@@ -109,5 +109,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db9f643b8a53f7744ae13fd7460c6a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filePath: ./
-  fileName: screenConfig.txt
+  filePath: ./Config_Files/screen_config.txt
