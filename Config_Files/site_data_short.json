@@ -1,0 +1,34 @@
+{
+  "sites": [
+    {
+      "name": "Luxor",
+      "description": "Luxor, Egypt is the home of the royal tombs and the ancient capital of the pharaohs",
+      "latitude": 25.6872,
+      "longitude": 32.6396,
+
+      "panos": [
+        {
+          "id": 5,
+          "name": "LuxorTempleFirstCourtNight",
+          "left_eye": "D:/Unity Projects/CatalystVR_New/Site_Data/Luxor/Panos/blue_ceiling-cube-L.tif",
+          "right_eye": "D:/Unity Projects/CatalystVR_New/Site_Data/Luxor/Panos/blue_ceiling-cube-R.tif",
+          "description": "This CAVEcam was shot in the Luxor Temple showing the First Court of Ramesses II and the 14th Century Mosque of Abu al-Haggag, at night.  See: http://www.calit2.net/newsroom/rss.php?id=1862 and http://en.wikipedia.org/wiki/Luxor_Temple"
+        },
+        {
+          "id": 7,
+          "name": "LuxorMedinetHabuHypostyle",
+          "left_eye": "CAVEkiosk_SiteData/P1220731-Panorama-L.tif",
+          "right_eye": "CAVEkiosk_SiteData/P1220731-Panorama-R.tif",
+          "description": "This CAVEcam was shot in the Temple of Ramesses III at Medinet Habu. This is outside of the columns CAVEcam shot and the Royal Treasure Halls.\nSee: http://www.calit2.net/newsroom/rss.php?id=1862\nand http://en.wikipedia.org/wiki/Medinet_Habu_(temple)"
+        },
+        {
+          "id": 15,
+          "name": "LuxorMedinetHabuColumnsBlueCeiling",
+          "left_eye": "CAVEkiosk_SiteData/P1220891-Panorama-L.tif",
+          "right_eye": "CAVEkiosk_SiteData/P1220891-Panorama-R.tif",
+          "description": "This CAVEcam was shot in the Temple of Ramesses III at Medinet Habu. Of particular interest is the existing colors on the columns and ceilings, and the clear graffiti from 1817 and 1818. The overexposed portions of the image were, of course, due to the bright sunlight, and inspired subsequent taking of multiple exposures to attempt high-dynamic range (HDR) captures of scenes like this. See: http://www.calit2.net/newsroom/rss.php?id=1862 and http://en.wikipedia.org/wiki/Medinet_Habu_(temple)"
+        }
+      ]
+    }
+  ]
+}

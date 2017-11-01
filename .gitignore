@@ -5,6 +5,8 @@
 # Inverse ignore some stuff
 !/Assets/
 !/ProjectSettings/
+!/Config_Files/
+!/Site_data/
 !.gitignore
 !*.txt
 
