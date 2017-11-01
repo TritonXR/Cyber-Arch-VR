@@ -31,6 +31,7 @@ public class CameraViewpoint : MonoBehaviour {
 
         Ray raycastRay = new Ray(cameraTransform.position, cameraTransform.forward);
 
+        //Debug.DrawRay(raycastRay.origin, raycastRay.direction);
         Debug.DrawRay(raycastRay.origin, raycastRay.direction * 1000);
 
         RaycastHit hitInfo;

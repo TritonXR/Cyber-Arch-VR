@@ -32,5 +32,21 @@ public class ThreeDeeModelSceneManager : MonoBehaviour {
 
             SceneManager.LoadScene("Main");
         }
+
+        if (GamepadInput.Get(InputOption.LEFT_STICK_HORIZONTAL))
+        {
+            float stickValue = GamepadInput.GetInputValue(InputOption.LEFT_STICK_HORIZONTAL);
+
+            if (stickValue > 0)
+            {
+                Debug.Log("Left analog stick pushed to the right!");
+            }
+            else if (stickValue < 0)
+            {
+                Debug.Log("Left analog stick pushed to the left!");
+            }
+
+        }
+
     }
 }

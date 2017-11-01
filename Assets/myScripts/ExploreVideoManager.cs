@@ -3,19 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ThreeSixtyImageSceneManager : MonoBehaviour {
+public class ExploreVideoManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
 		
 	}
-
-    void Update()
-    {
-
+	
+	// Update is called once per frame
+	void Update () {
         CheckForInput();
-
-    }
+	}
 
     public void CheckForInput()
     {
@@ -23,7 +21,7 @@ public class ThreeSixtyImageSceneManager : MonoBehaviour {
         {
             Debug.Log("B button was pressed down! Going back one level.");
 
-            SceneManager.LoadScene("Main");
+            SceneManager.LoadScene("VideoMenu_Scene");
         }
 
         if (GamepadInput.GetDown(InputOption.START_BUTTON))
@@ -32,20 +30,6 @@ public class ThreeSixtyImageSceneManager : MonoBehaviour {
 
             SceneManager.LoadScene("Main");
         }
+     }
 
-        if (GamepadInput.Get(InputOption.LEFT_STICK_HORIZONTAL))
-        {
-            float stickValue = GamepadInput.GetInputValue(InputOption.LEFT_STICK_HORIZONTAL);
-
-            if (stickValue > 0)
-            {
-                Debug.Log("Left analog stick pushed to the right!");
-            }
-            else if (stickValue < 0)
-            {
-                Debug.Log("Left analog stick pushed to the left!");
-            }
-
-        }
-    }
-}
+ }
