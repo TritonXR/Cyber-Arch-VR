@@ -28,16 +28,16 @@ public class MainMenuManager : MonoBehaviour {
 
     public void Load3DModelScene()
     {
-        SceneManager.LoadScene("3DModel_Scene");
+        SceneManager.LoadScene("3DModelMenu_Scene");
     }
 
     public void Load360ImageScene()
     {
-        SceneManager.LoadScene("360Image_Scene");
+        SceneManager.LoadScene("360ImageMenu_Scene");
     }
 
     public void LoadVideoScene()
     {
-        SceneManager.LoadScene("Video_Scene");
+        SceneManager.LoadScene("VideoMenu_Scene");
     }
 }
