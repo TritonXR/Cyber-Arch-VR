@@ -50,7 +50,7 @@ public class Panorama : SiteElement
                 camSkybox.material = leftEye;
 
             }
-            else if (cam.stereoTargetEye == StereoTargetEyeMask.Right)
+            else
             {
 
                 camSkybox.material = rightEye;
@@ -92,7 +92,7 @@ public class Panorama : SiteElement
 
         if (!File.Exists(leftEyePath) || !File.Exists(rightEyePath))
         {
-
+            StatusText.SetText("Failed to load files");
             Debug.LogErrorFormat("Could not load pano: Failed to find left pano {0} or right pano {1}", leftEyePath, rightEyePath);
 
         }
@@ -124,13 +124,20 @@ public class Panorama : SiteElement
             }
             */
 
+            StatusText.SetText("Loading left textures from tif");
+
             yield return StartCoroutine(GetTexturesFromTif(leftEyePath, leftTextures));
+
+            StatusText.SetText("Loading right textures from tif");
+
             yield return StartCoroutine(GetTexturesFromTif(rightEyePath, rightTextures));
 
             int leftTexSize = leftTextures[0].width;
             int rightTexSize = rightTextures[0].width;
 
             TextureFormat format = leftTextures[0].format;
+
+            StatusText.SetText("Creating cubemaps");
 
             // Stage 2: Create Cubemaps
             Cubemap leftCubemap = new Cubemap(leftTexSize, format, false);
@@ -394,6 +401,9 @@ public class Panorama : SiteElement
 
         Debug.Log("Loading Image As Textures: " + imagePath);
 
+        StatusText.SetText("Loading tif pages");
+        yield return null;
+
         TiffImage loadedTiff = new TiffImage(imagePath);
         loadedTiff.SetTifPages();
 
@@ -407,14 +417,17 @@ public class Panorama : SiteElement
     {
 
         Debug.Log("Starting threads to convert images");
+        StatusText.SetText("Starting threads to convert images");
         yield return null;
 
-        int numThreadsPerImage = 5;
+        int numThreadsPerImage = 3;
 
         List<ImageToColorArray> converters = new List<ImageToColorArray>();
 
-        foreach (Image img in images)
+        for (int i = 0; i < images.Count; i++)
         {
+
+            Image img = images[i];
 
             ImageToColorArray converter = new ImageToColorArray(new Bitmap(img), numThreadsPerImage);
             converters.Add(converter);
@@ -423,16 +436,27 @@ public class Panorama : SiteElement
           
         }
 
-        foreach (ImageToColorArray converter in converters)
+        for (int i = 0; i < converters.Count; i++)
         {
 
-            while (!converter.IsFinished())
+            ImageToColorArray converter = converters[i];
+
+            StatusText.SetText("Waiting for conversion to complete");
+
+            while (converter.IsFinished() == false)
             {
                 yield return null;
             }
 
-            Texture2D finalTex = new Texture2D(converter.bitmap.Width, converter.bitmap.Height);
-            finalTex.SetPixels(converter.GetFinalArray());
+            Debug.LogWarning("Converter is finished! Just to check: " + converter.IsFinished());
+
+            StatusText.SetText("Done converting! Setting textures");
+
+            Texture2D finalTex = new Texture2D(converter.width, converter.height);
+            UnityEngine.Color[] pixelColorArray = converter.GetFinalArray();
+
+            Debug.Log("Resulting array size: " + pixelColorArray.Length);
+            finalTex.SetPixels(pixelColorArray);
             textures.Add(finalTex);
 
         }

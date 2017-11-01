@@ -21,12 +21,22 @@ public class CAVECameraRig : MonoBehaviour
 
         get
         {
-
             List<Camera> allCameras = new List<Camera>();
-            allCameras.AddRange(leftEyeCameras);
-            allCameras.AddRange(rightEyeCameras);
-            return allCameras;
 
+            if (leftEyeCameras != null && rightEyeCameras != null)
+            {
+                allCameras.AddRange(leftEyeCameras);
+                allCameras.AddRange(rightEyeCameras);
+                return allCameras;
+            }
+            else
+            {
+
+                allCameras.Add(Camera.main);
+
+            }
+
+            return allCameras;
         }
     }
 

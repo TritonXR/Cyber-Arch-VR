@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
+
+// Base class for UI buttons that work with Sites/Site elements.
+
 [RequireComponent(typeof(Image))]
 public class SiteBaseButton : MonoBehaviour {
 
-
+    // Get the size of this button.
     public Vector2 buttonSize
     {
         get
@@ -19,11 +22,13 @@ public class SiteBaseButton : MonoBehaviour {
         }
     }
 
+    // Set the color of this button.
     public void SetButtonColor(Color buttonColor)
     {
         GetComponent<Image>().color = buttonColor;
     }
 
+    // Move the button left/right.
     public void MoveButtonHorizontally(float delta)
     {
 

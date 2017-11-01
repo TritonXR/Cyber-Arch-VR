@@ -9,7 +9,10 @@ using System;
 public class ImageToColorArray
 {
 
-    public Bitmap bitmap;
+    private Bitmap bitmap;
+
+    public int width;
+    public int height;
 
     private int numThreadsPerImage = 5;
     private UnityEngine.Color[] finalColorArray;
@@ -23,6 +26,9 @@ public class ImageToColorArray
 
         bitmap = originalImage;
         this.numThreadsPerImage = numThreadsPerImage;
+
+        width = bitmap.Width;
+        height = bitmap.Height;
 
     }
 
@@ -47,6 +53,8 @@ public class ImageToColorArray
                     end = picHeight;
                 }
 
+                Debug.LogFormat("Creating thread #{0} with start at {1} and end at {2}", i, start, end);
+
                 ImagePieceToColorArray newConverter = new ImagePieceToColorArray(new Bitmap(bitmap), start, end);
                 converters.Add(newConverter);
 
@@ -63,8 +71,10 @@ public class ImageToColorArray
     public bool IsFinished()
     {
 
-        foreach (ImagePieceToColorArray converter in converters)
+        for (int i = 0; i < converters.Count; i++)
         {
+
+            ImagePieceToColorArray converter = converters[i];
 
             if (!converter.finished)
             {
@@ -73,7 +83,7 @@ public class ImageToColorArray
 
         }
 
-        if (finished == false)
+        if (!finished)
         {
             CombinePieces();
         }
