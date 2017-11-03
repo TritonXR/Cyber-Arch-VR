@@ -90,6 +90,8 @@ public class SiteManager : MonoBehaviour {
 
             POI newPOI = (GameObject.Instantiate(poiPrefab) as GameObject).GetComponent<POI>();
             newPOI.SetAssociatedSite(site);
+            newPOI.activeMat = poiActiveMat;
+            newPOI.inactiveMat = poiInactiveMat;
 
         }
     }

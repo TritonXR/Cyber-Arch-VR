@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(MeshRenderer))]
 public class POI : MonoBehaviour {
 
     private Site associatedSite;
+    public Material activeMat;
+    public Material inactiveMat;
+
+    public static POI selectedPOI;
 
 	// Use this for initialization
 	void Start ()
@@ -40,10 +43,31 @@ public class POI : MonoBehaviour {
         transform.LookAt(CatalystEarth.earthTransform.position);
     }
 
-    public void SetMaterial(Material mat)
+    public void SetSelected(bool selected)
     {
 
-        GetComponent<MeshRenderer>().material = mat;
+        if (selected)
+        {
+
+            if (selectedPOI != null && selectedPOI != this)
+            {
+                selectedPOI.SetSelected(false);
+            }
+
+            selectedPOI = this;
+            GetComponentInChildren<MeshRenderer>().material = activeMat;
+            CatalystEarth.RotateToPOI(this);
+
+        }
+        else
+        {
+            if (selectedPOI = this)
+            {
+                selectedPOI = null;
+            }
+
+            GetComponentInChildren<MeshRenderer>().material = inactiveMat;
+        }
 
     }
 }

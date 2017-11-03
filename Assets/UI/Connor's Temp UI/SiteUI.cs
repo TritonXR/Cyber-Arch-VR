@@ -153,6 +153,8 @@ public class SiteUI : MonoBehaviour {
         // Get all the data types associated with that site.
         List<SiteElementSet> dataSets = siteButton.associatedSite.dataSets;
 
+        siteButton.associatedSite.associatedPOI.SetSelected(true);
+
         // Create a button for each data type.
         for (int i = 0; i < dataSets.Count; i++)
         {
@@ -223,6 +225,7 @@ public class SiteUI : MonoBehaviour {
 
             // Set the new button to highlight.
             siteButtons[selectedSiteIndex].SetButtonColor(buttonActiveColor);
+            siteButtons[selectedSiteIndex].associatedSite.associatedPOI.SetSelected(true);
 
         }
     }

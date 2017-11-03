@@ -84,4 +84,35 @@ public class CatalystEarth : MonoBehaviour {
         float lon = (float)Mathf.Atan(position.x / position.z); //phi
         return new LatLon(lat, lon);
     }
+
+    public static void RotateToPOI(POI poi)
+    {
+
+        Vector3 point = poi.transform.position;
+
+        Vector3 vectorToPlayer;
+
+        if (CAVECameraRig.instance != null && CAVECameraRig.instance.viewpoint != null)
+        {
+            vectorToPlayer = CAVECameraRig.instance.viewpoint.transform.position - earthTransform.position;
+        }
+        else
+        {
+            vectorToPlayer = Camera.main.transform.position - earthTransform.position;
+        }
+
+        vectorToPlayer = vectorToPlayer.normalized;
+
+
+        Vector3 earthPoint = earthTransform.position + (vectorToPlayer * planetRadius);
+
+        Debug.Log("FORWARD IS " + earthTransform.transform.forward);
+
+        Quaternion rot = Quaternion.FromToRotation(point, earthPoint);
+
+        float yRot = rot.eulerAngles.y;
+
+        earthTransform.transform.Rotate(earthTransform.transform.up, yRot);
+
+    }
 }
