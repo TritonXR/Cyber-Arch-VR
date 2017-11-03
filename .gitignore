@@ -9,6 +9,7 @@
 !/Site_data/
 !.gitignore
 !*.txt
+!*.dll
 
 # OS Stuff
 .DS_Store
