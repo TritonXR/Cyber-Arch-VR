@@ -13,9 +13,11 @@ public class Site : MonoBehaviour
         }
     }
 
-    private SerializableSite siteData;
+    public SerializableSite siteData;
 
     public List<SiteElementSet> dataSets;
+
+    public POI associatedPOI;
 
     public void InitializeSite(SerializableSite siteJSON)
     {
