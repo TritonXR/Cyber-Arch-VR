@@ -112,7 +112,46 @@ public class CatalystEarth : MonoBehaviour {
 
         float yRot = rot.eulerAngles.y;
 
-        earthTransform.transform.Rotate(earthTransform.transform.up, yRot);
+        if (yRot > 180.0f)
+        {
+            Debug.Log("Y ROT WAS " + yRot);
+            yRot = yRot - 360.0f;
+            Debug.Log("Y ROT IS " + yRot);
+
+        }
+
+        //earthTransform.transform.Rotate(earthTransform.transform.up, yRot);
+        RoutineRunner.instance.StartCoroutine(RotateEarth(yRot, 0.25f));
+
+    }
+    
+
+    public static IEnumerator RotateEarth(float angle, float time)
+    {
+
+        float anglePerSecond = angle / time;
+
+        float totalAngleRotated = 0;
+
+
+
+        while (Mathf.Abs(totalAngleRotated) < Mathf.Abs(angle))
+        {
+
+            float angleThisFrame = Time.deltaTime * anglePerSecond;
+            float futureAngle = totalAngleRotated + angleThisFrame;
+
+            if (Mathf.Abs(futureAngle) < Mathf.Abs(angle))
+            {
+                earthTransform.transform.Rotate(earthTransform.transform.up, angleThisFrame);
+                totalAngleRotated += angleThisFrame;
+
+            }
+
+            yield return null;
+        }
+
+        earthTransform.transform.Rotate(earthTransform.transform.up, angle - totalAngleRotated);
 
     }
 }
