@@ -50,8 +50,34 @@ public class CAVECameraRig : MonoBehaviour
 
     private static Transform cameraRigTransform;
 
+    public static Vector3 playerViewpoint
+    {
+
+        get
+        {
+            if (instance != null)
+            {
+                if (instance.CAVEViewpoint != null)
+                {
+                    return instance.CAVEViewpoint.transform.position;
+                }
+            }
+
+            if (Camera.main != null)
+            {
+                return Camera.main.transform.position;
+            }
+
+            Debug.LogError("Could not find any camera as a viewpoint. Please either use a CAVE config or create a Main Camera");
+            return Vector3.zero;
+
+        }
+
+
+    }
+
     [HideInInspector]
-    public CameraViewpoint viewpoint;
+    public CameraViewpoint CAVEViewpoint;
 
     public static CAVECameraRig instance;
 
@@ -65,7 +91,7 @@ public class CAVECameraRig : MonoBehaviour
         }
 
         instance = this;
-        viewpoint = GetComponentInChildren<CameraViewpoint>();
+        CAVEViewpoint = GetComponentInChildren<CameraViewpoint>();
 
     }
 
@@ -105,8 +131,8 @@ public class CAVECameraRig : MonoBehaviour
         GameObject rightEyeCameraParent = new GameObject("Right Eye Cameras");
 
         // Set up the cameras in the hierarchy. Make sure their parents are the left/right camera objects.
-        leftEyeCameraParent.transform.parent = viewpoint.transform;
-        rightEyeCameraParent.transform.parent = viewpoint.transform;
+        leftEyeCameraParent.transform.parent = CAVEViewpoint.transform;
+        rightEyeCameraParent.transform.parent = CAVEViewpoint.transform;
 
         // Set camera parents in the same position and rotation.
         leftEyeCameraParent.transform.localPosition = Vector3.zero;

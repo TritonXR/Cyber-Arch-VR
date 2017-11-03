@@ -92,14 +92,9 @@ public class CatalystEarth : MonoBehaviour {
 
         Vector3 vectorToPlayer;
 
-        if (CAVECameraRig.instance != null && CAVECameraRig.instance.viewpoint != null)
-        {
-            vectorToPlayer = CAVECameraRig.instance.viewpoint.transform.position - earthTransform.position;
-        }
-        else
-        {
-            vectorToPlayer = Camera.main.transform.position - earthTransform.position;
-        }
+        vectorToPlayer = CAVECameraRig.playerViewpoint - earthTransform.position;
+
+
 
         vectorToPlayer = vectorToPlayer.normalized;
 
