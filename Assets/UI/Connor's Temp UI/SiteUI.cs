@@ -198,7 +198,7 @@ public class SiteUI : MonoBehaviour {
     // Select a data type. Just call the activate function to load that data.
     public void SelectSiteSetButton(SiteElementButton siteElementButton)
     {
-        siteElementButton.associatedElementSet.Activate();
+        siteElementButton.associatedElementSet.NextElement();
     }
 
     // Move the site buttons in a direction. Direction should be -1 or 1
