@@ -1,79 +1,79 @@
-﻿using System;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System.Threading;
 
-public class TiffImage
-{
+public class TiffImage {
 
-    public TiffImage(string fileName)
-    {
-        this.FileName = fileName;
-    }
+    private string fileName;
 
-    public string FileName { get; private set; }
-
-    public int PageCount
-    {
-        get
-        {
-            // Get the frame dimension list from the image of the file and
-            Image image = Image.FromFile(FileName);
-
-            // Get the globally unique identifier (GUID)
-            Guid frameGuid = image.FrameDimensionsList[0];
-
-            // Create the frame dimension
-            FrameDimension frameDimension = new FrameDimension(frameGuid);
-
-            //Gets the total number of frames in the .tiff file
-            return image.GetFrameCount(frameDimension);
-        }
-    }
+    public bool allPagesLoaded;
 
     public Image[] pages;
 
-    // Return the memory stream of a specific page
-    public Image GetTiffSpecificPage(int pageNumber)
+    private int pageCount;
+    private int finishedPages;
+
+    public TiffImage(string fileName)
     {
-        Image image = Image.FromFile(this.FileName);
+        this.fileName = fileName;
+    }
 
-        using (MemoryStream stream = new MemoryStream())
+    public void LoadAllPages()
+    {
+
+        try
         {
-            Guid frameGuid = image.FrameDimensionsList[0];
 
-            FrameDimension objDimension = new FrameDimension(frameGuid);
+            Bitmap bitmap = (Bitmap)Image.FromFile(fileName);
+            pageCount = bitmap.GetFrameCount(FrameDimension.Page);
 
-            image.SelectActiveFrame(objDimension, pageNumber);
+            pages = new Image[pageCount];
 
-            image.Save(stream, ImageFormat.Png);
+            for (int idx = 0; idx < pageCount; idx++)
+            {
+                int index = idx;
+                Bitmap clonedBitmap = new Bitmap(bitmap);
+                ThreadPool.QueueUserWorkItem(new WaitCallback(state => LoadPage(index, clonedBitmap)));
 
-            Image streamImage = Image.FromStream(stream);
-
-            return streamImage;
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError(e);
         }
     }
 
-    public void SetTifPages()
+    private void LoadPage(int index, Bitmap bitmap)
     {
 
-        if (pages == null || pages.Length == 0)
+        try
         {
-            pages = new Image[PageCount];
 
-            for (int i = 0; i < PageCount; i++)
+            Debug.Log("Loading tif page " + (index+1) + " of " + pageCount);
+
+            // save each frame to a bytestream
+            bitmap.SelectActiveFrame(FrameDimension.Page, index);
+            MemoryStream byteStream = new MemoryStream();
+            bitmap.Save(byteStream, ImageFormat.Tiff);
+
+            // and then create a new Image from it
+            pages[index] = Image.FromStream(byteStream);
+
+            finishedPages++;
+
+            if (finishedPages == pageCount)
             {
-                Debug.LogFormat("Loading tif page {0} of {1}", i + 1, PageCount);
-
-                Image tifPage = GetTiffSpecificPage(i);
-                pages[i] = tifPage;
-
-                Debug.LogFormat("Loaded tif page {0} of {1}", i + 1, PageCount);  
-
+                allPagesLoaded = true;
             }
+
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError(e);
         }
     }
 }

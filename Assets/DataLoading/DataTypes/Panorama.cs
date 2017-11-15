@@ -312,7 +312,7 @@ public class Panorama : SiteElement
 
         yield return null;
 
-        yield return StartCoroutine(LoadImagesAsTextures(images, textures));
+      //  yield return StartCoroutine(LoadImagesAsTextures(images, textures));
 
         //StartCoroutine(CacheTextures(textures, tifPath));
 
@@ -398,14 +398,18 @@ public class Panorama : SiteElement
 
     public IEnumerator LoadTifPages(string imagePath, List<Image> tifImages)
     {
-
-        Debug.Log("Loading Image As Textures: " + imagePath);
-
         StatusText.SetText("Loading tif pages");
+
         yield return null;
 
         TiffImage loadedTiff = new TiffImage(imagePath);
-        loadedTiff.SetTifPages();
+
+        ThreadPool.QueueUserWorkItem(new WaitCallback(state => loadedTiff.LoadAllPages()));
+
+        while (!loadedTiff.allPagesLoaded)
+        {
+            yield return null;
+        }
 
         tifImages.AddRange(loadedTiff.pages);
 

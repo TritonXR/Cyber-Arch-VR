@@ -1,0 +1,67 @@
+﻿using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System.Threading;
+
+public class TiffImage
+{
+    public bool allPagesLoaded = false;
+    string fileName;
+
+    Image[] pages;
+
+    public TiffImage(string fileName)
+    {
+        this.fileName = fileName;
+    }
+
+    public Image[] GetAllPages()
+    {
+        if (pages == null)
+        {
+            LoadAllPages();
+        }
+
+        return pages;
+    }
+
+    public void LoadAllPages()
+    {
+
+        Bitmap bitmap = (Bitmap)Image.FromFile(fileName);
+        int count = bitmap.GetFrameCount(FrameDimension.Page);
+        pages = new Image[count];
+
+        for (int idx = 0; idx < count; idx++)
+        {
+
+
+
+        }
+
+
+    }
+
+    public void LoadPage(int index, Bitmap bitmap)
+    {
+
+        bitmap.SelectActiveFrame(FrameDimension.Page, index);
+
+        Debug.Log("About to create byte stream");
+
+        MemoryStream byteStream = new MemoryStream();
+
+        Debug.Log("About to save");
+
+        bitmap.Save(byteStream, ImageFormat.Tiff);
+
+        Image newImage = Image.FromStream(byteStream);
+
+        pages[index] = newImage;
+
+    }
+}
