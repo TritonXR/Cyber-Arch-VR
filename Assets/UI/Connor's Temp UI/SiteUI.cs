@@ -205,7 +205,7 @@ public class SiteUI : MonoBehaviour {
     public void MoveSiteButtons(int direction)
     {
 
-        // Make sure the new selection is within bounds. 
+        // Make sure the new selection is within bounds.  
         if (selectedSiteIndex + direction >= 0 && selectedSiteIndex + direction <= siteButtons.Count - 1)
         {
             

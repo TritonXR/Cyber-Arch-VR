@@ -72,8 +72,6 @@ public class CAVECameraRig : MonoBehaviour
             return Vector3.zero;
 
         }
-
-
     }
 
     [HideInInspector]

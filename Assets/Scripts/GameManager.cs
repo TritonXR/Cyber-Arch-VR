@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 {
 
     public const string dataDirectory = "./CAVEkiosk_SiteData";
-    public const string cacheDirectory = dataDirectory + "/CachedData";
+    public const string cacheDirectory = "./Cached_Data";
     public const string dataJsonFile = dataDirectory + "/site_data.json";
 
     // Is this running in the cave?
