@@ -95,13 +95,14 @@ public class GameManager : MonoBehaviour
 
     public void GoHome()
     {
-        /*
-        if (SiteManager.activeSite != null)
+        
+        if (SiteManager.activeSiteElement != null)
         {
-           // SiteManager.activeSite.Deselect();
+
+            SiteManager.activeSiteElement.Deactivate();
 
         }
-        */
+        
 
         SceneManager.LoadScene(0);
         // PlatformMonitor.ResetMonitorText();
@@ -115,7 +116,7 @@ public class GameManager : MonoBehaviour
     public void Update()
     {
 
-        if (GamepadInput.GetDown(InputOption.START_BUTTON))
+        if (GamepadInput.GetDown(InputOption.START_BUTTON) && CAVECameraRig.instance != null)
         {
             CAVECameraRig.instance.Toggle3D();
         }

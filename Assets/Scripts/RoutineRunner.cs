@@ -12,12 +12,11 @@ public class RoutineRunner : MonoBehaviour {
         if (instance != null)
         {
             GameObject.Destroy(gameObject);
+            return;
         }
 
         instance = this;
         DontDestroyOnLoad(gameObject);
             
     }
-
-
 }

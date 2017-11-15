@@ -35,6 +35,7 @@ public class Model : SiteElement
 
     protected override IEnumerator LoadCoroutine()
     {
+
         SerializableModel modelData = siteData as SerializableModel;
 
         GameObject pivot = new GameObject("Position Pivot");
@@ -43,6 +44,14 @@ public class Model : SiteElement
         yield return null;
 
         string path = modelData.filePath;
+
+        if (!File.Exists(path))
+        {
+            Debug.LogError("Failed to find file: " + path);
+            failed = true;
+            yield break;
+        }
+
 
         if (Path.GetExtension(path) == ".dae")
         {
@@ -217,7 +226,6 @@ public class Model : SiteElement
 
         StringBuilder resultString = new StringBuilder();
 
-
         Debug.Log("Reading file into memory...");
         yield return null;
 
@@ -258,7 +266,6 @@ public class Model : SiteElement
                     string index = lineValues[i];
                     if (!seenIndices.Contains(index))
                     {
-
                         seenIndices.Add(index);
 
                     }
@@ -283,9 +290,7 @@ public class Model : SiteElement
             }
             else if (line[0] == 'g')
             {
-
                 seenIndices.Clear();
-
             }
         }
 

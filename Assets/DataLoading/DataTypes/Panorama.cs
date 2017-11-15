@@ -106,7 +106,8 @@ public class Panorama : SiteElement
             List<Texture2D> leftTextures = new List<Texture2D>();
             List<Texture2D> rightTextures = new List<Texture2D>();
 
-            /*
+            StatusText.SetText("Loading left textures from tif");
+
             // Stage 1: Load Textures
             if (Directory.Exists(GetCacheDirectory(leftEyePath)))
             {
@@ -117,6 +118,8 @@ public class Panorama : SiteElement
                 yield return StartCoroutine(GetTexturesFromTif(leftEyePath, leftTextures));
             }
 
+            StatusText.SetText("Loading right textures from tif");
+
             if (Directory.Exists(GetCacheDirectory(rightEyePath)))
             {
                 yield return StartCoroutine(GetTexturesFromCache(rightEyePath, rightTextures));
@@ -125,16 +128,11 @@ public class Panorama : SiteElement
             {
                 yield return StartCoroutine(GetTexturesFromTif(rightEyePath, rightTextures));
             }
-            */
+            
+          //  yield return StartCoroutine(GetTexturesFromTif(leftEyePath, leftTextures));
 
 
-            StatusText.SetText("Loading left textures from tif");
-
-            yield return StartCoroutine(GetTexturesFromTif(leftEyePath, leftTextures));
-
-            StatusText.SetText("Loading right textures from tif");
-
-            yield return StartCoroutine(GetTexturesFromTif(rightEyePath, rightTextures));
+           // yield return StartCoroutine(GetTexturesFromTif(rightEyePath, rightTextures));
 
             int leftTexSize = leftTextures[0].width;
             int rightTexSize = rightTextures[0].width;
@@ -168,6 +166,8 @@ public class Panorama : SiteElement
 
             leftEye.SetTexture(Shader.PropertyToID("_Tex"), leftCubemap);
             rightEye.SetTexture(Shader.PropertyToID("_Tex"), rightCubemap);
+
+            loaded = true;
 
             yield return null;
 
@@ -275,8 +275,6 @@ public class Panorama : SiteElement
             for (int i = 0; i < 6; i++)
             {
 
-                Debug.Log("Loading Texture " + i + " from cache");
-
                 string statusText = string.Format("Loading textures: \n{0} of {1}", i+1, 6);
 
                 string fullPath = Path.GetFullPath(facePaths[i]);
@@ -286,8 +284,6 @@ public class Panorama : SiteElement
                 newTex.LoadImage(bytes);
 
                 yield return null;
-
-                Debug.Log("Path is: " + fullPath);
 
                 textures.Add(newTex);
 
@@ -316,11 +312,10 @@ public class Panorama : SiteElement
 
         yield return StartCoroutine(LoadImagesAsTextures(images, textures));
 
-        // StartCoroutine(CacheTextures(textures, tifPath));
+        CacheTextures(textures, tifPath);
 
     }
 
-    
     public static string GetCacheDirectory(string filePath)
     {
 
@@ -332,7 +327,7 @@ public class Panorama : SiteElement
 
     }
 
-    public IEnumerator CacheTextures(List<Texture2D> textures, string imagePath)
+    public void CacheTextures(List<Texture2D> textures, string imagePath)
     {
 
         string cacheDirectory = GetCacheDirectory(imagePath);
@@ -391,8 +386,6 @@ public class Panorama : SiteElement
             File.WriteAllBytes(finalpath, bytes);
 
         }
-
-        yield return null;
     }
     
 
@@ -402,10 +395,9 @@ public class Panorama : SiteElement
 
         yield return null;
 
-        
         TiffImage loadedTiff = new TiffImage(imagePath);
 
-        ThreadPool.QueueUserWorkItem(new WaitCallback(state => loadedTiff.LoadAllPages()));
+        loadedTiff.LoadAllPages();
 
         while (!loadedTiff.allPagesLoaded)
         {
@@ -421,21 +413,14 @@ public class Panorama : SiteElement
     public void LoadImageSubsetAsTextures(List<Image> images, ImageToColorArray[] converters, int startIndex, int endIndex, int numThreadsPerImage)
     {
 
-        Debug.LogFormat("Loading image subset from index {0} to {1}", startIndex, endIndex);
-
         try
         {
             for (int i = startIndex; i < endIndex; i++)
             {
-
-
-
                 Image img = images[i];
                 Bitmap newBitmap = new Bitmap(img);
 
                 ImageToColorArray converter = new ImageToColorArray(newBitmap, numThreadsPerImage);
-
-                Debug.Log("Inserting converter at index " + i);
 
                 converters[i] = converter;
 
@@ -456,8 +441,6 @@ public class Panorama : SiteElement
         for (int i = 0; i < images.Count; i++)
         {
             Bitmap testBit = new Bitmap(images[i]);
-            Debug.LogWarningFormat("FIRST PIX OF TEX {0} IS: {1}", i, testBit.GetPixel(0, 0));
-
         }
 
 

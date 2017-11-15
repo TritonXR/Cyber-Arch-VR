@@ -78,7 +78,7 @@ public class SiteManager : MonoBehaviour {
 
         Debug.LogFormat("Loaded {0} sites", sites.Count);
 
-         CreatePOIs();
+        CreatePOIs();
     }
 
     

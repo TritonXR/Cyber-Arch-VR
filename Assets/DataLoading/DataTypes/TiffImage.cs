@@ -37,8 +37,7 @@ public class TiffImage {
             {
                 int index = idx;
                 ThreadPool.QueueUserWorkItem(new WaitCallback(state => LoadPage(index)));
-                // LoadPage(index, bitmap);
-            }
+            } 
         }
         catch (System.Exception e)
         {
@@ -79,8 +78,6 @@ public class TiffImage {
             }
 
             Bitmap testBit = new Bitmap(pages[index]);
-
-            Debug.LogWarningFormat("Image #{0} has first pixel {1} Inside LOADPAGE", index, testBit.GetPixel(0, 0));
 
             finishedPages++;
 

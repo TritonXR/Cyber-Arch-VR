@@ -88,7 +88,7 @@ public abstract class SiteElementSet : MonoBehaviour
 
     public Coroutine NextElement()
     {
-
+        Debug.Log("Selecting next element");
         return StartCoroutine(CycleElements(1));
       
     }
@@ -135,23 +135,13 @@ public abstract class SiteElementSet : MonoBehaviour
 
             activeElement = siteElements[activeElementIndex];
 
-            yield return activeElement.Activate();
-
-            if (activeElement.failed)
-            {
-                siteElements.Remove(activeElement);
-                activeElement = null;
-
-                if (siteElements.Count <= 0)
-                {
-                    StatusText.SetText("Data set failed to load. Removing.");
-                }
-                else
-                {
-                    StatusText.SetText("Failed to load. Cycling to next data element.");
-                    CycleElements(direction);
-                }
-            }
         }
+        else
+        {
+            activeElement = siteElements[0];
+        }
+
+        yield return activeElement.Activate();
+
     }
 }

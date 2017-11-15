@@ -30,13 +30,19 @@
         }
       ],
       "sites3D": [
-
         {
-
           "id": 99,
           "name": "testobj",
-          "filePath": "CAVEkiosk_SiteData/EastMound/Catal_East Mound.obj",
+          "filePath": "Site_Data/EastMound/Catal_East Mound.obj",
           "description": "this is a test object"
+        }
+      ],
+      "models": [
+        {
+          "id": 9,
+          "name": "testmodel",
+          "filePath": "Site_Data/southwall/southwall.obj",
+          "description":  "testing a model"
         }
       ]
     },

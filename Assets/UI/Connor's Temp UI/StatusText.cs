@@ -16,8 +16,11 @@ public class StatusText : MonoBehaviour {
 
     public static void SetText(string text)
     {
+        if (statusText != null)
+        {
+            statusText.text = text;
 
-        statusText.text = text;
+        }
 
     }
 
