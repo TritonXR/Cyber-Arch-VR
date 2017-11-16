@@ -87,9 +87,8 @@ public abstract class SiteElement : MonoBehaviour
 [System.Serializable]
 public abstract class SerializableSiteElement
 {
-
     public int id;
     public string name;
     public string description;
-
+    public bool unityinternal;
 }

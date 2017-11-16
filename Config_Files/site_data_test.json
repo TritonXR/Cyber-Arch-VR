@@ -8,18 +8,33 @@
 
       "panos": [
         {
-          "id": 15,
-          "name": "LuxorMedinetHabuColumnsBlueCeiling",
-          "left_eye": "./Site_Data/Luxor/Panos/blue_ceiling-cube-L.tif",
-          "right_eye": "./Site_Data/Luxor/Panos/blue_ceiling-cube-R.tif",
-          "description": "This CAVEcam was shot in the Temple of Ramesses III at Medinet Habu. Of particular interest is the existing colors on the columns and ceilings, and the clear graffiti from 1817 and 1818.  The overexposed portions of the image were, of course, due to the bright sunlight, and inspired subsequent taking of multiple exposures to attempt high-dynamic range (HDR) captures of scenes like this."
-        },
-        {
           "id": 5,
           "name": "LuxorTempleFirstCourtNight",
-          "left_eye": "./Site_Data/Luxor/Panos/P1500067-Panorama-L.tif",
-          "right_eye": "./Site_Data/Luxor/Panos/P1500067-Panorama-R.tif",
-          "description": "empty"
+          "left_eye": "./Site_Data/Luxor/Panos/blue_ceiling-cube-L.tif",
+          "right_eye": "./Site_Data/Luxor/Panos/blue_ceiling-cube-R.tif",
+          "description": "This CAVEcam was shot in the Luxor Temple showing the First Court of Ramesses II and the 14th Century Mosque of Abu al-Haggag, at night.  See: http://www.calit2.net/newsroom/rss.php?id=1862 and http://en.wikipedia.org/wiki/Luxor_Temple"
+        },
+        {
+          "id": 7,
+          "name": "LuxorMedinetHabuHypostyle",
+          "left_eye": "CAVEkiosk_SiteData/P1220731-Panorama-L.tif",
+          "right_eye": "CAVEkiosk_SiteData/P1220731-Panorama-R.tif",
+          "description": "This CAVEcam was shot in the Temple of Ramesses III at Medinet Habu. This is outside of the columns CAVEcam shot and the Royal Treasure Halls.\nSee: http://www.calit2.net/newsroom/rss.php?id=1862\nand http://en.wikipedia.org/wiki/Medinet_Habu_(temple)"
+        },
+        {
+          "id": 15,
+          "name": "LuxorMedinetHabuColumnsBlueCeiling",
+          "left_eye": "CAVEkiosk_SiteData/P1220891-Panorama-L.tif",
+          "right_eye": "CAVEkiosk_SiteData/P1220891-Panorama-R.tif",
+          "description": "This CAVEcam was shot in the Temple of Ramesses III at Medinet Habu. Of particular interest is the existing colors on the columns and ceilings, and the clear graffiti from 1817 and 1818. The overexposed portions of the image were, of course, due to the bright sunlight, and inspired subsequent taking of multiple exposures to attempt high-dynamic range (HDR) captures of scenes like this. See: http://www.calit2.net/newsroom/rss.php?id=1862 and http://en.wikipedia.org/wiki/Medinet_Habu_(temple)"
+        }
+      ],
+      "sites3D": [
+        {
+          "id": 99,
+          "name": "testobj",
+          "filePath": "Site_Data/EastMound/Catal_East Mound.obj",
+          "description": "this is a test object"
         }
       ],
       "models": [
@@ -36,13 +51,37 @@
       "description": "Mada'in Saleh in Saudi Arabia contains tombs carved of sandstone from the 1 st century",
       "latitude": 26.8040,
       "longitude": 37.9573,
+
       "panos": [
         {
           "id": 26,
           "name": "Madaen-Saleh-Al-Diwan",
-          "left_eye": "/Site_Data/MadaenSaleh/Panos/P1120084-Panorama-L",
-          "right_eye": "/Site_Data/MadaenSaleh/Panos/P1120084-Panorama-R",
+          "left_eye": "CAVEkiosk_SiteData/P1120084-Panorama-L.tif",
+          "right_eye": "CAVEkiosk_SiteData/P1120084-Panorama-R.tif",
           "description": "This image shows a large chamber hall (Al-Diwan) carved from the sandstone"
+        }
+      ],
+      "images": [
+        {
+          "id": 26,
+          "name": "Madaen-Saleh-Al-Diwan",
+          "image": "madaen-saleh.jpg",
+          "description": "This image shows a large chamber hall (Al-Diwan) carved from the sandstone"
+        }
+      ]
+    },
+    {
+      "name": "Iraq",
+      "description": "St. Elijah's Monastery in Iraq was destroyed by Isis",
+      "latitude": 36.2925,
+      "longitude": 43.1309,
+
+      "images": [
+        {
+          "id": 22,
+          "name": "St. Elijah Monastery",
+          "image": "elijah_monastry.jpg",
+          "description": "Destroyed monastery in Iraq"
         }
       ]
     },
@@ -51,13 +90,13 @@
       "description": "Ushaiger in Saudi Arabia was a major stopping pong for pilgrams from Iraq and Iran and is currently being reconstructed",
       "latitude": 25.3472,
       "longitude": 45.1822,
-      "panos": [
+
+      "images": [
         {
-          "id": 203,
-          "name": "Ushaiger-Ruin",
-          "left_eye": "./Site_Data/Ushaiger/Panos/Ushaiger-Ruin-L.tif",
-          "right_eye": "./Site_Data/Ushaiger/Panos/Ushaiger-Ruin-L.tif",
-          "description": "empty"
+          "id": 66,
+          "name": "Ushaiger",
+          "image": "ushaiger.jpg",
+          "description": "Image of reconstruction process"
         }
       ]
     },
@@ -74,6 +113,33 @@
           "file": "mar_saba.ply",
           "description": "Mar Saba is a Greek Orthodox monastery located in the Judean desert. It dates back to the 5th century A.D"
         }
+      ],
+      "images": [
+        {
+          "id": 23,
+          "name": "picture 1",
+          "file": "image1.jpg",
+          "description": "not need but can include"
+        },
+        {
+          "id": 24,
+          "name": "picture 2",
+          "file": "image2.jpg",
+          "description": "not need but can include"
+        },
+        {
+          "id": 25,
+          "name": "picture 3",
+          "file": "image3.jpg",
+          "description": "not need but can include"
+        },
+        {
+          "id": 26,
+          "name": "picture 3",
+          "file": "image3.jpg",
+          "description": "not need but can include"
+
+        }
       ]
     },
     {
@@ -86,15 +152,22 @@
         {
           "id": 307,
           "name": "Botanical Garden Pavillion",
-          "left_eye": "./Site_Data/Australia/Panos/BotanicalGarden1Left.tif",
-          "right_eye": "./Site_Data/Australia/Panos/BotanicalGarden1Right.tif",
+          "left_eye": "BotanicalGarden1Left.tif",
+          "right_eye": "BotanicalGarden1Right.tif",
           "description": "Botanical Garden pavillion in Melbourne, Australia"
-
+        }
+      ],
+      "images": [
+        {
+          "id": 3,
+          "name": "Baptistery Flythrough",
+          "file": "garden.jpg",
+          "description": "Botanical Garden pavillion in Melbourne, Australia"
         }
       ]
     },
     {
-      "name": "Italy",
+      "name": "Italy Site",
       "description": "Monumnet in Florence",
       "latitude": 43.7696,
       "longitude": 11.2558,
@@ -102,14 +175,45 @@
         {
           "id": 13,
           "name": "Florence-Duomo-3",
-          "left_eye": "Site_Data/13__Florence-Duomo-3__left.tif",
-          "right_eye": "Site_Data/13__Florence-Duomo-3__right.tif",
+          "left_eye": "Florence_Duomo_LEFT_Pan03.tif",
+          "right_eye": "Florence_Duomo_RIGHT_Pan03.tif",
           "description": "Standing on the roof of the Santa Maria del Fiore Cathedral in Florence, Italy"
+        },
+
+        {
+          "id": 167,
+          "name": "SantuarioAnglona3",
+          "left_eye": "SantuarioAnglona_LEFT_Pan03.tif",
+          "right_eye": "SantuarioAnglona_RIGHT_Pan03.tif",
+          "description": "Standing inside Santuario di Santa Maria Regina di Anglona in Tursi, Italy"
+        }
+
+      ],
+      "videos": [
+        {
+          "id": 3,
+          "name": "Baptistery Flythrough",
+          "file": "BapPres_FullRes.mp4",
+          "description": "Explore the oldest monument in Florence, Italy!"
+        },
+        {
+          "id": 2,
+          "name": "Outdoor ritual",
+          "file": "flythrough.mp4",
+          "description": "Flythrough of Arma Veirana cliff in Italy."
+        }
+      ],
+      "points": [
+        {
+          "id": 1,
+          "name": "Arma Veirana Cliff",
+          "file": "sfm_cliff_detail_ultra.ply",
+          "description": "Exterior point cloud of cliff above Arma Veirana cave in Italy."
         }
       ]
     },
     {
-      "name": "Greece",
+      "name": "Greece Site",
       "description": "Steno greece pan collection",
       "latitude": 39.0742,
       "longitude": 21.8243,

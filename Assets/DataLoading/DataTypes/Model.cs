@@ -346,5 +346,3 @@ public class SerializableModel : SerializableSiteElement
 {
     public string filePath;
 }
-
-

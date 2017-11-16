@@ -10,6 +10,12 @@ using DocImageUtility;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 
+#if UNITY_EDITOR
+
+using UnityEditor;
+
+#endif
+
 public class Panorama : SiteElement
 {
     public const int FRONT_INDEX = 0;
@@ -88,6 +94,26 @@ public class Panorama : SiteElement
 
     protected override IEnumerator LoadCoroutine()
     {
+   
+        if (siteData.unityinternal)
+        {
+            yield return StartCoroutine(LoadInternal());
+        }
+        else
+        {
+            yield return StartCoroutine(LoadExternal());
+
+        }
+
+    }
+
+    protected IEnumerator LoadInternal()
+    {
+        yield return StartCoroutine(LoadExternal());
+    }
+
+    protected IEnumerator LoadExternal()
+    {
 
         SerializableCAVECam camData = siteData as SerializableCAVECam;
 
@@ -101,7 +127,8 @@ public class Panorama : SiteElement
 
         }
 
-        else {
+        else
+        {
 
             List<Texture2D> leftTextures = new List<Texture2D>();
             List<Texture2D> rightTextures = new List<Texture2D>();
@@ -128,11 +155,6 @@ public class Panorama : SiteElement
             {
                 yield return StartCoroutine(GetTexturesFromTif(rightEyePath, rightTextures));
             }
-            
-          //  yield return StartCoroutine(GetTexturesFromTif(leftEyePath, leftTextures));
-
-
-           // yield return StartCoroutine(GetTexturesFromTif(rightEyePath, rightTextures));
 
             int leftTexSize = leftTextures[0].width;
             int rightTexSize = rightTextures[0].width;
@@ -178,6 +200,7 @@ public class Panorama : SiteElement
     {
         leftEye = null;
         rightEye = null;
+
         yield return null;
     }
 
