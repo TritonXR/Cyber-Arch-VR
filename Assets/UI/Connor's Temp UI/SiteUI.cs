@@ -14,9 +14,10 @@ public class SiteUI : MonoBehaviour {
 
     // Colors for selected/unselected buttons.
     public Color buttonActiveColor = Color.green;
-    public Color buttonInactiveColor = Color.black;
-    public Color buttonTextColor = Color.red;
-    public int buttonTextSize = 3;
+    public Color buttonInactiveColor = Color.grey;
+    public Color buttonTextColor = Color.white;
+    public int siteButtonTextSize = 3;
+    public int dataButtonTextSize = 4;
 
     // Where buttons should start creating on the UI.
     public Vector2 siteButtonStartPos = Vector2.zero;
@@ -121,7 +122,7 @@ public class SiteUI : MonoBehaviour {
             SiteButton newButton = (GameObject.Instantiate(buttonPrefab) as GameObject).AddComponent<SiteButton>();
             newButton.gameObject.name = site.siteName;
             newButton.GetComponentInChildren<Text>().color = buttonTextColor;
-            newButton.GetComponentInChildren<Text>().fontSize = buttonTextSize;
+            newButton.GetComponentInChildren<Text>().fontSize = siteButtonTextSize;
             newButton.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(25, 35);
             
            
@@ -179,8 +180,7 @@ public class SiteUI : MonoBehaviour {
 
             // Determine this button's x and y position.
             float newXPos = i * (newButton.buttonSize.x + horizontalBuffer);
-            float newYPos = -siteButton.buttonSize.y - verticalBuffer;
-           
+            float newYPos = -siteButton.buttonSize.y / 1.5f + verticalBuffer;
 
             //Determine size of site element button
             newButton.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(25, 10);
@@ -194,6 +194,10 @@ public class SiteUI : MonoBehaviour {
 
             // Set the button color to inactive.
             newButton.SetButtonColor(buttonInactiveColor);
+
+            // Set data button font size and color
+            newButton.GetComponentInChildren<Text>().fontSize = dataButtonTextSize;
+            newButton.GetComponentInChildren<Text>().color = buttonTextColor;
 
         }
 
