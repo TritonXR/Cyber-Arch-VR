@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VR;
 
 // UI Class for selecting sites and their data types.
 public class SiteUI : MonoBehaviour {
@@ -97,7 +98,40 @@ public class SiteUI : MonoBehaviour {
             }
         }
 	}
-    
+
+    public void LoopToSiteButton(int toIndex)
+    {
+        Debug.Log("Moving buttons from " + selectedSiteIndex + " to " + toIndex);
+        while (selectedSiteIndex != toIndex)
+        {
+            if (selectedSiteIndex > toIndex)
+            {
+                MoveSiteButtons(-1);
+            } else if (selectedSiteIndex < toIndex)
+            {
+                MoveSiteButtons(1);
+            }
+        }
+        
+    }
+
+    public void LoopToElementButton(int toIndex)
+    {
+        Debug.Log("Moving buttons from " + selectedElementIndex + " to " + toIndex);
+        while (selectedElementIndex != toIndex)
+        {
+            if (selectedElementIndex > toIndex)
+            {
+                MoveElementButtons(-1);
+            }
+            else if (selectedElementIndex < toIndex)
+            {
+                MoveElementButtons(1);
+            }
+        }
+
+    }
+
     // Instantiate buttons on the UI.
     public void CreateButtons()
     {
@@ -119,7 +153,7 @@ public class SiteUI : MonoBehaviour {
             newButton.gameObject.name = site.siteName;
 
             // Set the associated site.
-            newButton.SetSite(site);
+            newButton.SetSite(site, i);
 
             // Determine the x position this button should go.
             float newXPos = siteButtonStartPos.x + (i * (newButton.buttonSize.x + horizontalBuffer));
@@ -138,7 +172,7 @@ public class SiteUI : MonoBehaviour {
         }
 
         // If there are any buttons, select the first one (show a highlight).
-        if (siteButtons.Count > 0)
+        if (siteButtons.Count > 0 && !VRDevice.isPresent)
         {
             siteButtons[selectedSiteIndex].SetButtonColor(buttonActiveColor);
         }
@@ -167,7 +201,7 @@ public class SiteUI : MonoBehaviour {
             newButton.gameObject.name = dataSet.setType;
 
             // Be sure to set the data.
-            newButton.SetData(dataSet);
+            newButton.SetData(dataSet, i);
 
             // Determine this button's x and y position.
             float newXPos = i * (newButton.buttonSize.x + horizontalBuffer);
@@ -186,7 +220,7 @@ public class SiteUI : MonoBehaviour {
         }
 
         // If there are any data types, highlight the first one.
-        if (dataSets.Count > 0)
+        if (dataSets.Count > 0 && !VRDevice.isPresent)
         {
             selectedElementIndex = 0;
             siteElementButtons[selectedElementIndex].SetButtonColor(buttonActiveColor);
