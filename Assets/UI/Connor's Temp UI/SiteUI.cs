@@ -12,12 +12,22 @@ public class SiteUI : MonoBehaviour {
     // Button prefab. Must be dragged in.
     public Object buttonPrefab;
 
+    // Button Description prefab. 
+    public Object buttonDescription;
+
     // Colors for selected/unselected buttons.
     public Color buttonActiveColor = Color.green;
     public Color buttonInactiveColor = Color.grey;
     public Color buttonTextColor = Color.white;
     public int siteButtonTextSize = 3;
     public int dataButtonTextSize = 4;
+
+    // Button fonts
+    public Font latoBold;
+    public Font latoBlack;
+    public Font ralewayLight;
+    public Font ralewayBold;
+    public Font ralewayMedium;
 
     // Where buttons should start creating on the UI.
     public Vector2 siteButtonStartPos = Vector2.zero;
@@ -123,6 +133,7 @@ public class SiteUI : MonoBehaviour {
             newButton.gameObject.name = site.siteName;
             newButton.GetComponentInChildren<Text>().color = buttonTextColor;
             newButton.GetComponentInChildren<Text>().fontSize = siteButtonTextSize;
+            newButton.GetComponentInChildren<Text>().font = latoBlack;
             newButton.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(25, 35);
             
            
@@ -142,6 +153,9 @@ public class SiteUI : MonoBehaviour {
 
             // Color the button unselected.
             newButton.SetButtonColor(buttonInactiveColor);
+
+            //
+            newButton.SetDescription(site, latoBold);
 
 
         }
@@ -198,6 +212,7 @@ public class SiteUI : MonoBehaviour {
             // Set data button font size and color
             newButton.GetComponentInChildren<Text>().fontSize = dataButtonTextSize;
             newButton.GetComponentInChildren<Text>().color = buttonTextColor;
+            newButton.GetComponentInChildren<Text>().font = latoBold;
 
         }
 
