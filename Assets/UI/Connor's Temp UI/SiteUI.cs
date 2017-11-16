@@ -123,6 +123,7 @@ public class SiteUI : MonoBehaviour {
             newButton.GetComponentInChildren<Text>().color = buttonTextColor;
             newButton.GetComponentInChildren<Text>().fontSize = buttonTextSize;
             newButton.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(25, 35);
+            
            
 
             // Set the associated site.
@@ -179,6 +180,10 @@ public class SiteUI : MonoBehaviour {
             // Determine this button's x and y position.
             float newXPos = i * (newButton.buttonSize.x + horizontalBuffer);
             float newYPos = -siteButton.buttonSize.y - verticalBuffer;
+           
+
+            //Determine size of site element button
+            newButton.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(25, 10);
 
             // Set the parent and position of the button.
             newButton.transform.SetParent(siteButton.transform);

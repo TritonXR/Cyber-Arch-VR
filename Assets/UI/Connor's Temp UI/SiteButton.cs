@@ -19,6 +19,10 @@ public class SiteButton : SiteBaseButton {
         GetComponentInChildren<Text>().horizontalOverflow = HorizontalWrapMode.Wrap;
 
         GetComponentInChildren<Text>().text = site.siteName + "\n\n" + site.siteDescription;
-        //GetComponentInChildren<Text>().rectTransform.
+        GetComponentInChildren<Text>().alignment = TextAnchor.UpperCenter;
+        //GetComponentInChildren<Text>().rectTransform.offsetMin = new Vector2(0f,1f);
+        //GetComponentInChildren<Text>().rectTransform.offsetMax = new Vector2(0f,0f);
+
     }
+            
 }
