@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 // UI Class for selecting sites and their data types.
 public class SiteUI : MonoBehaviour {
@@ -13,7 +14,9 @@ public class SiteUI : MonoBehaviour {
 
     // Colors for selected/unselected buttons.
     public Color buttonActiveColor = Color.green;
-    public Color buttonInactiveColor = Color.grey;
+    public Color buttonInactiveColor = Color.black;
+    public Color buttonTextColor = Color.red;
+    public int buttonTextSize = 3;
 
     // Where buttons should start creating on the UI.
     public Vector2 siteButtonStartPos = Vector2.zero;
@@ -64,10 +67,10 @@ public class SiteUI : MonoBehaviour {
         }
 
         // If the right stick is pushed, move buttons left or right.
-        if (GamepadInput.GetDown(InputOption.RIGHT_STICK_HORIZONTAL))
+        if (GamepadInput.GetDown(InputOption.LEFT_STICK_HORIZONTAL))
         {
             // The direction of the stick. Helps us determine what direction it was pushed.
-            float stickValue = GamepadInput.GetInputValue(InputOption.RIGHT_STICK_HORIZONTAL);
+            float stickValue = GamepadInput.GetInputValue(InputOption.LEFT_STICK_HORIZONTAL);
 
             // If pushed to the right, move selected button to the right.
             if (stickValue > 0)
@@ -117,6 +120,10 @@ public class SiteUI : MonoBehaviour {
             // Instantiate the button from prefab, and add the SiteButton component. Name it the site name.
             SiteButton newButton = (GameObject.Instantiate(buttonPrefab) as GameObject).AddComponent<SiteButton>();
             newButton.gameObject.name = site.siteName;
+            newButton.GetComponentInChildren<Text>().color = buttonTextColor;
+            newButton.GetComponentInChildren<Text>().fontSize = buttonTextSize;
+            newButton.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(25, 35);
+           
 
             // Set the associated site.
             newButton.SetSite(site);

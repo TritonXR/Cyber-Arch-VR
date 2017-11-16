@@ -13,6 +13,14 @@ public class Site : MonoBehaviour
         }
     }
 
+    public string siteDescription
+    {
+        get
+        {
+            return siteData.description;
+        }
+    }
+
     public SerializableSite siteData;
 
     public List<SiteElementSet> dataSets;

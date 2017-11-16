@@ -16,7 +16,9 @@ public class SiteButton : SiteBaseButton {
         associatedSite = site;
 
         // Be sure to set the button text.
-        GetComponentInChildren<Text>().text = site.siteName;
+        GetComponentInChildren<Text>().horizontalOverflow = HorizontalWrapMode.Wrap;
 
+        GetComponentInChildren<Text>().text = site.siteName + "\n\n" + site.siteDescription;
+        //GetComponentInChildren<Text>().rectTransform.
     }
 }
