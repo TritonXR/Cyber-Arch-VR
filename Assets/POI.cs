@@ -45,7 +45,6 @@ public class POI : MonoBehaviour {
 
     public void SetSelected(bool selected)
     {
-
         if (selected)
         {
 

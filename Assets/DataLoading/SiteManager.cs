@@ -5,6 +5,8 @@ using System.IO;
 
 public class SiteManager : MonoBehaviour {
 
+    public static SiteManager instance;
+
     public string pathToDataJsonFile = "./Config_Files/site_data.json";
 
     [HideInInspector]
@@ -15,11 +17,19 @@ public class SiteManager : MonoBehaviour {
     public Material poiActiveMat;
     public Material poiInactiveMat;
 
+
     public static SiteElement activeSiteElement;
+    public static SiteElementSet activeSiteElementSet;
 
     void Awake()
     {
-        LoadSites(pathToDataJsonFile);
+
+        if (instance == null)
+        {
+            instance = this;
+            LoadSites(pathToDataJsonFile);
+        }
+
     }
 
     public void LoadSites(string dataPath)
@@ -78,12 +88,17 @@ public class SiteManager : MonoBehaviour {
 
         Debug.LogFormat("Loaded {0} sites", sites.Count);
 
-         CreatePOIs();
+        StartCoroutine(CreatePOIs());
     }
 
     
-    public void CreatePOIs()
+    public IEnumerator CreatePOIs()
     {
+
+        while (CatalystEarth.earthTransform == null)
+        {
+            yield return null;
+        }
 
         foreach (Site site in sites)
         {

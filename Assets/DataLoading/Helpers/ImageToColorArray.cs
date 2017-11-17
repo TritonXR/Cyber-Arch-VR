@@ -14,12 +14,12 @@ public class ImageToColorArray
     public int width;
     public int height;
 
-    private int numThreadsPerImage = 5;
+    private int numThreadsPerImage = 2;
     private UnityEngine.Color[] finalColorArray;
 
     private List<ImagePieceToColorArray> converters;
 
-    private bool finished = false;
+    public bool finished = false;
 
     public ImageToColorArray(Bitmap originalImage, int numThreadsPerImage)
     {
@@ -55,12 +55,13 @@ public class ImageToColorArray
 
                 Debug.LogFormat("Creating thread #{0} with start at {1} and end at {2}", i, start, end);
 
-                ImagePieceToColorArray newConverter = new ImagePieceToColorArray(new Bitmap(bitmap), start, end);
+                Bitmap newBitmap = new Bitmap(bitmap);
+
+                ImagePieceToColorArray newConverter = new ImagePieceToColorArray(newBitmap, start, end);
                 converters.Add(newConverter);
 
                 ThreadPool.QueueUserWorkItem(new WaitCallback(state => newConverter.Convert()));
             }
-
         }
         catch (Exception e)
         {
@@ -70,6 +71,10 @@ public class ImageToColorArray
 
     public bool IsFinished()
     {
+        if (converters == null || converters.Count != numThreadsPerImage)
+        {
+            return false;
+        }
 
         for (int i = 0; i < converters.Count; i++)
         {
@@ -80,7 +85,6 @@ public class ImageToColorArray
             {
                 return false;
             }
-
         }
 
         if (!finished)

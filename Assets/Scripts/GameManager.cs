@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 {
 
     public const string dataDirectory = "./CAVEkiosk_SiteData";
-    public const string cacheDirectory = dataDirectory + "/CachedData";
+    public const string cacheDirectory = "./Cached_Data";
     public const string dataJsonFile = dataDirectory + "/site_data.json";
 
     // Is this running in the cave?
@@ -95,18 +95,22 @@ public class GameManager : MonoBehaviour
 
     public void GoHome()
     {
-        /*
-        if (SiteManager.activeSite != null)
+        Debug.Log("GOING HOME");
+        
+        if (SiteManager.activeSiteElementSet != null)
         {
-           // SiteManager.activeSite.Deselect();
+
+            SiteManager.activeSiteElementSet.Deactivate();
 
         }
-        */
+        
 
         SceneManager.LoadScene(0);
         // PlatformMonitor.ResetMonitorText();
 
         SiteManager siteManager = GetComponentInChildren<SiteManager>();
+
+        CatalystEarth.Show();
 
         // siteManager.StartCoroutine(siteManager.PlacePOIsWhenReady());
 
@@ -115,15 +119,24 @@ public class GameManager : MonoBehaviour
     public void Update()
     {
 
-        if (GamepadInput.GetDown(InputOption.START_BUTTON))
+        if (GamepadInput.GetDown(InputOption.START_BUTTON) && CAVECameraRig.instance != null)
         {
             CAVECameraRig.instance.Toggle3D();
         }
 
         if (GamepadInput.GetDown(InputOption.BACK_BUTTON))
         {
+            Debug.Log("HOME PRESSED");
             // Loads the first scene. Assumed to be the home scene.
             GoHome();
+        }
+
+        if (GamepadInput.GetDown(InputOption.A_BUTTON))
+        {
+            if (SiteManager.activeSiteElementSet != null)
+            {
+                SiteManager.activeSiteElementSet.NextElement();
+            }
         }
     }
 }

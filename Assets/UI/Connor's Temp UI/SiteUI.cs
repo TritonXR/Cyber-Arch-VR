@@ -2,25 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VR;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 // UI Class for selecting sites and their data types.
 public class SiteUI : MonoBehaviour {
 
     // Site manager. Must be dragged in.
-    public SiteManager siteManager;
+    private SiteManager siteManager;
 
     // Button prefab. Must be dragged in.
     public Object buttonPrefab;
+    public Object siteElementButtonPrefab;
+
+    // Button Description prefab. 
+    public Object buttonDescription;
 
     // Colors for selected/unselected buttons.
     public Color buttonActiveColor = Color.green;
     public Color buttonInactiveColor = Color.grey;
+    public Color buttonTextColor = Color.white;
+    public int siteButtonTextSize = 2;
+    public int dataButtonTextSize = 3;
+
+    // Button fonts
+    public Font latoBold;
+    public Font latoBlack;
+    public Font ralewayLight;
+    public Font ralewayBold;
+    public Font ralewayMedium;
 
     // Where buttons should start creating on the UI.
     public Vector2 siteButtonStartPos = Vector2.zero;
 
     // Space button buttons, vertically/horizontally.
-    public float horizontalBuffer = 0.5f;
+    public float horizontalBuffer = 1f;
     public float verticalBuffer = 0.5f;
 
     // Lists of the active buttons.
@@ -34,6 +50,10 @@ public class SiteUI : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
+        if (siteManager == null)
+        {
+            siteManager = SiteManager.instance;
+        }
         // Create the buttons as soon as the game starts.
         CreateButtons();
 
@@ -65,10 +85,10 @@ public class SiteUI : MonoBehaviour {
         }
 
         // If the right stick is pushed, move buttons left or right.
-        if (GamepadInput.GetDown(InputOption.RIGHT_STICK_HORIZONTAL))
+        if (GamepadInput.GetDown(InputOption.LEFT_STICK_HORIZONTAL))
         {
             // The direction of the stick. Helps us determine what direction it was pushed.
-            float stickValue = GamepadInput.GetInputValue(InputOption.RIGHT_STICK_HORIZONTAL);
+            float stickValue = GamepadInput.GetInputValue(InputOption.LEFT_STICK_HORIZONTAL);
 
             // If pushed to the right, move selected button to the right.
             if (stickValue > 0)
@@ -82,6 +102,8 @@ public class SiteUI : MonoBehaviour {
                 {
                     MoveElementButtons(1);
                 }
+
+                siteButtons[selectedSiteIndex].associatedSite.associatedPOI.SetSelected(true);
             }
 
             // If pushed to the left, move selected button to the left.
@@ -95,13 +117,14 @@ public class SiteUI : MonoBehaviour {
                 {
                     MoveElementButtons(-1);
                 }
+
+                siteButtons[selectedSiteIndex].associatedSite.associatedPOI.SetSelected(true);
             }
         }
 	}
 
     public void LoopToSiteButton(int toIndex)
     {
-        Debug.Log("Moving buttons from " + selectedSiteIndex + " to " + toIndex);
         while (selectedSiteIndex != toIndex)
         {
             if (selectedSiteIndex > toIndex)
@@ -112,23 +135,8 @@ public class SiteUI : MonoBehaviour {
                 MoveSiteButtons(1);
             }
         }
-        
-    }
 
-    public void LoopToElementButton(int toIndex)
-    {
-        Debug.Log("Moving buttons from " + selectedElementIndex + " to " + toIndex);
-        while (selectedElementIndex != toIndex)
-        {
-            if (selectedElementIndex > toIndex)
-            {
-                MoveElementButtons(-1);
-            }
-            else if (selectedElementIndex < toIndex)
-            {
-                MoveElementButtons(1);
-            }
-        }
+        siteButtons[selectedSiteIndex].associatedSite.associatedPOI.SetSelected(true);
 
     }
 
@@ -151,6 +159,14 @@ public class SiteUI : MonoBehaviour {
             // Instantiate the button from prefab, and add the SiteButton component. Name it the site name.
             SiteButton newButton = (GameObject.Instantiate(buttonPrefab) as GameObject).AddComponent<SiteButton>();
             newButton.gameObject.name = site.siteName;
+            newButton.GetComponentInChildren<Text>().color = buttonTextColor;
+            newButton.GetComponentInChildren<Text>().fontSize = siteButtonTextSize;
+            newButton.GetComponentInChildren<Text>().font = latoBlack;
+            newButton.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(35, 40);
+
+            BoxCollider collider = newButton.gameObject.AddComponent<BoxCollider>();
+            Vector2 size = newButton.GetComponentInChildren<RectTransform>().rect.size;
+            collider.size = new Vector3(size.x, size.y, 0.01f);
 
             // Set the associated site.
             newButton.SetSite(site, i);
@@ -168,6 +184,9 @@ public class SiteUI : MonoBehaviour {
             // Color the button unselected.
             newButton.SetButtonColor(buttonInactiveColor);
 
+            //
+            newButton.SetDescription(site, latoBold);
+
 
         }
 
@@ -175,7 +194,20 @@ public class SiteUI : MonoBehaviour {
         if (siteButtons.Count > 0 && !VRDevice.isPresent)
         {
             siteButtons[selectedSiteIndex].SetButtonColor(buttonActiveColor);
+            StartCoroutine(SetActivePOIWhenReady());
         }
+    }
+
+    public IEnumerator SetActivePOIWhenReady()
+    {
+
+        while (siteButtons[selectedSiteIndex].associatedSite.associatedPOI == null)
+        {
+            yield return null;
+        }
+
+        siteButtons[selectedSiteIndex].associatedSite.associatedPOI.SetSelected(true);
+
     }
 
     // Select a site button (i.e. "Luxor", "Mar Saba", etc.)
@@ -187,7 +219,7 @@ public class SiteUI : MonoBehaviour {
         // Get all the data types associated with that site.
         List<SiteElementSet> dataSets = siteButton.associatedSite.dataSets;
 
-        siteButton.associatedSite.associatedPOI.SetSelected(true);
+        // siteButton.associatedSite.associatedPOI.SetSelected(true);
 
         // Create a button for each data type.
         for (int i = 0; i < dataSets.Count; i++)
@@ -197,7 +229,7 @@ public class SiteUI : MonoBehaviour {
             SiteElementSet dataSet = dataSets[i];
 
             // Create the new button from component. Add the SiteElementButton script and give it a name.
-            SiteElementButton newButton = (GameObject.Instantiate(buttonPrefab) as GameObject).AddComponent<SiteElementButton>();
+            SiteElementButton newButton = (GameObject.Instantiate(siteElementButtonPrefab) as GameObject).AddComponent<SiteElementButton>();
             newButton.gameObject.name = dataSet.setType;
 
             // Be sure to set the data.
@@ -205,7 +237,10 @@ public class SiteUI : MonoBehaviour {
 
             // Determine this button's x and y position.
             float newXPos = i * (newButton.buttonSize.x + horizontalBuffer);
-            float newYPos = -siteButton.buttonSize.y - verticalBuffer;
+            float newYPos = -siteButton.buttonSize.y / 1.5f + verticalBuffer;
+
+            //Determine size of site element button
+            newButton.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(35, 10);
 
             // Set the parent and position of the button.
             newButton.transform.SetParent(siteButton.transform);
@@ -216,6 +251,16 @@ public class SiteUI : MonoBehaviour {
 
             // Set the button color to inactive.
             newButton.SetButtonColor(buttonInactiveColor);
+
+            // Set data button font size and color
+            newButton.GetComponentInChildren<Text>().fontSize = dataButtonTextSize;
+            newButton.GetComponentInChildren<Text>().color = buttonTextColor;
+            newButton.GetComponentInChildren<Text>().font = latoBold;
+
+            // Set size of collider
+            BoxCollider collider = newButton.gameObject.AddComponent<BoxCollider>();
+            Vector2 size = newButton.GetComponentInChildren<RectTransform>().rect.size;
+            collider.size = new Vector3(size.x, size.y, 0.01f);
 
         }
 
@@ -232,7 +277,9 @@ public class SiteUI : MonoBehaviour {
     // Select a data type. Just call the activate function to load that data.
     public void SelectSiteSetButton(SiteElementButton siteElementButton)
     {
+        CatalystEarth.Hide();
         siteElementButton.associatedElementSet.NextElement();
+        SceneManager.LoadScene("DataScene");
     }
 
     // Move the site buttons in a direction. Direction should be -1 or 1
@@ -259,7 +306,7 @@ public class SiteUI : MonoBehaviour {
 
             // Set the new button to highlight.
             siteButtons[selectedSiteIndex].SetButtonColor(buttonActiveColor);
-            siteButtons[selectedSiteIndex].associatedSite.associatedPOI.SetSelected(true);
+            //siteButtons[selectedSiteIndex].associatedSite.associatedPOI.SetSelected(true);
 
         }
     }
