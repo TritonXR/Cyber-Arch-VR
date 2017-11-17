@@ -331,7 +331,7 @@ public class Panorama : SiteElement
 
         yield return StartCoroutine(LoadImagesAsTextures(images, textures));
 
-        CacheTextures(textures, tifPath);
+        yield return StartCoroutine(CacheTextures(textures, tifPath));
 
     }
 
@@ -346,7 +346,7 @@ public class Panorama : SiteElement
 
     }
 
-    public void CacheTextures(List<Texture2D> textures, string imagePath)
+    public IEnumerator CacheTextures(List<Texture2D> textures, string imagePath)
     {
 
         string cacheDirectory = GetCacheDirectory(imagePath);
@@ -401,6 +401,9 @@ public class Panorama : SiteElement
             }
 
             byte[] bytes = textures[i].EncodeToPNG();
+
+            StatusText.SetText("Stage 4: Caching Images:\n" + (i + 1) + " of " + textures.Count);
+            yield return null;
 
             File.WriteAllBytes(finalpath, bytes);
 
