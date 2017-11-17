@@ -97,10 +97,10 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("GOING HOME");
         
-        if (SiteManager.activeSiteElement != null)
+        if (SiteManager.activeSiteElementSet != null)
         {
 
-            SiteManager.activeSiteElement.Deactivate();
+            SiteManager.activeSiteElementSet.Deactivate();
 
         }
         
@@ -129,6 +129,14 @@ public class GameManager : MonoBehaviour
             Debug.Log("HOME PRESSED");
             // Loads the first scene. Assumed to be the home scene.
             GoHome();
+        }
+
+        if (GamepadInput.GetDown(InputOption.A_BUTTON))
+        {
+            if (SiteManager.activeSiteElementSet != null)
+            {
+                SiteManager.activeSiteElementSet.NextElement();
+            }
         }
     }
 }

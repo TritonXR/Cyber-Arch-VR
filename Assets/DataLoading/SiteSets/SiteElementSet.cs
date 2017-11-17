@@ -77,10 +77,17 @@ public abstract class SiteElementSet : MonoBehaviour
         activeElementIndex = -1;
         activated = false;
 
+        if (SiteManager.activeSiteElementSet == this)
+        {
+            SiteManager.activeSiteElementSet = null;
+        }
+
+
         if (activeElement)
         {
             return activeElement.Deactivate();
         }
+
 
         return null;
 
@@ -142,6 +149,7 @@ public abstract class SiteElementSet : MonoBehaviour
         }
 
         yield return activeElement.Activate();
+        SiteManager.activeSiteElementSet = this;
 
     }
 }

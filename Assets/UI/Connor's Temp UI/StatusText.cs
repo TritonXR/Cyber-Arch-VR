@@ -6,14 +6,19 @@ using UnityEngine.UI;
 public class StatusText : MonoBehaviour {
 
     private static Text statusText;
+    private static GameObject parentCanvas;
+    private static Vector3 positionFromCameraToCanvas;
 
     public void Awake()
     {
         if (statusText == null)
         {
+            parentCanvas = GetComponentInParent<Canvas>().gameObject;
+            positionFromCameraToCanvas = parentCanvas.transform.position - Camera.main.transform.position;
+
             statusText = GetComponent<Text>();
             DontDestroyOnLoad(gameObject);
-            DontDestroyOnLoad(transform.parent.gameObject);
+            DontDestroyOnLoad(parentCanvas);
             Hide();
         }
         else
@@ -37,6 +42,7 @@ public class StatusText : MonoBehaviour {
     {
         if (statusText != null)
         {
+            UpdateCanvasPosition();
             statusText.gameObject.SetActive(true);
 
         }
@@ -47,6 +53,21 @@ public class StatusText : MonoBehaviour {
         if (statusText != null)
         {
             statusText.gameObject.SetActive(false);
+        }
+    }
+
+    public static void UpdateCanvasPosition()
+    {
+
+        parentCanvas.transform.position = Camera.main.transform.position + positionFromCameraToCanvas;
+
+    }
+
+    public void Update()
+    {
+        if (parentCanvas.transform.position != Camera.main.transform.position + positionFromCameraToCanvas)
+        {
+            UpdateCanvasPosition();
         }
     }
 }

@@ -170,7 +170,20 @@ public class SiteUI : MonoBehaviour {
         if (siteButtons.Count > 0)
         {
             siteButtons[selectedSiteIndex].SetButtonColor(buttonActiveColor);
+            StartCoroutine(SetActivePOIWhenReady());
         }
+    }
+
+    public IEnumerator SetActivePOIWhenReady()
+    {
+
+        while (siteButtons[selectedSiteIndex].associatedSite.associatedPOI == null)
+        {
+            yield return null;
+        }
+
+        siteButtons[selectedSiteIndex].associatedSite.associatedPOI.SetSelected(true);
+
     }
 
     // Select a site button (i.e. "Luxor", "Mar Saba", etc.)

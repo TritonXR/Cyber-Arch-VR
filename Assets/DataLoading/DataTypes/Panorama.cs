@@ -91,6 +91,8 @@ public class Panorama : SiteElement
 
         SerializableCAVECam camData = siteData as SerializableCAVECam;
 
+        Debug.Log("Loading " + camData.name);
+
         leftEyePath = camData.left_eye;
         rightEyePath = camData.right_eye;
 
@@ -269,13 +271,36 @@ public class Panorama : SiteElement
             for (int i = 0; i < 6; i++)
             {
 
-                string statusText = string.Format("Loading textures: \n{0} of {1}", i+1, 6);
+                string statusText = string.Format("Stage 1 of 2: Loading textures: \n{0} of {1}", i+1, 6);
+                StatusText.SetText(statusText);
 
                 string fullPath = Path.GetFullPath(facePaths[i]);
 
-                byte[] bytes = File.ReadAllBytes(fullPath);
-                Texture2D newTex = new Texture2D(1, 1);
-                newTex.LoadImage(bytes);
+                yield return null;
+
+                fullPath = fullPath.Replace("\\", "/");
+                string fullPathWWW = "file://" + fullPath;
+
+                Debug.Log("Loading image into texture from " + fullPath);
+
+                yield return null;
+
+                Texture2D newTex = new Texture2D(4, 4, TextureFormat.ARGB32, false);
+                WWW newWWW = new WWW(fullPathWWW);
+
+                yield return newWWW;
+
+                newWWW.LoadImageIntoTexture(newTex);
+
+                while (!newWWW.isDone)
+                {
+                    yield return null;
+                }
+
+                Debug.Log("Done loading");
+
+                //  byte[] bytes = File.ReadAllBytes(fullPath);
+                // newTex.LoadImage(bytes);
 
                 yield return null;
 
@@ -385,7 +410,7 @@ public class Panorama : SiteElement
 
     public IEnumerator LoadTifPages(string imagePath, List<Image> tifImages)
     {
-        StatusText.SetText("Loading tif pages");
+        StatusText.SetText("Stage 1: Loading Pages From Tif File");
 
         yield return null;
 
@@ -441,7 +466,7 @@ public class Panorama : SiteElement
         int numConverterThreads = 1;
         int numThreadsPerImage = 2;
 
-        StatusText.SetText("Starting threads to convert images");
+        StatusText.SetText("Stage 2: Starting threads to convert images");
 
         yield return null;
 
@@ -465,7 +490,7 @@ public class Panorama : SiteElement
 
         }
 
-        StatusText.SetText("Waiting for threads to finish");
+        StatusText.SetText("Stage 2: Converting images");
 
         yield return null;
 
@@ -476,10 +501,14 @@ public class Panorama : SiteElement
             {
                 yield return null;
             }
+        }
+
+        for (int i = 0; i < converters.Length; i++)
+        {
 
             ImageToColorArray converter = converters[i];
 
-            StatusText.SetText("Setting pixels for image #"+ (i+1));
+            StatusText.SetText("Stage 3: Saving images:\n" + (i + 1) + " of " + converters.Length);
 
             yield return null;
 
@@ -498,7 +527,7 @@ public class Panorama : SiteElement
     {
         Texture2D frontFace = textures[FRONT_INDEX];
         Texture2D backFace = textures[BACK_INDEX];
-
+ 
         Texture2D upFace = textures[UP_INDEX];
         Texture2D downFace = textures[DOWN_INDEX];
 
@@ -507,11 +536,28 @@ public class Panorama : SiteElement
 
         Debug.LogFormat("Setting Cubemap Faces from {0} textures", textures.Count);
 
+        StatusText.SetText("Final Stage: Setting cubemap faces:\n1 of 6");
+        yield return null;
         newCubemap.SetPixels(frontFace.GetPixels(), CubemapFace.PositiveZ);
+
+        StatusText.SetText("Final Stage: Setting cubemap faces:\n 2 of 6");
+        yield return null;
         newCubemap.SetPixels(upFace.GetPixels(), CubemapFace.PositiveY);
+
+        StatusText.SetText("Final Stage: Setting cubemap faces:\n 3 of 6");
+        yield return null;
         newCubemap.SetPixels(leftFace.GetPixels(), CubemapFace.NegativeX);
+
+        StatusText.SetText("Final Stage: Setting cubemap faces:\n 4 of 6");
+        yield return null;
         newCubemap.SetPixels(rightFace.GetPixels(), CubemapFace.PositiveX);
+
+        StatusText.SetText("Final Stage: Setting cubemap faces:\n 5 of 6");
+        yield return null;
         newCubemap.SetPixels(backFace.GetPixels(), CubemapFace.NegativeZ);
+
+        StatusText.SetText("Final Stage: Setting cubemap faces:\n 6 of 6");
+        yield return null;
         newCubemap.SetPixels(downFace.GetPixels(), CubemapFace.NegativeY);
 
         yield return null;

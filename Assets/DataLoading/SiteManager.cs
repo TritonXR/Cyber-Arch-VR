@@ -19,6 +19,7 @@ public class SiteManager : MonoBehaviour {
 
 
     public static SiteElement activeSiteElement;
+    public static SiteElementSet activeSiteElementSet;
 
     void Awake()
     {
@@ -87,12 +88,17 @@ public class SiteManager : MonoBehaviour {
 
         Debug.LogFormat("Loaded {0} sites", sites.Count);
 
-        CreatePOIs();
+        StartCoroutine(CreatePOIs());
     }
 
     
-    public void CreatePOIs()
+    public IEnumerator CreatePOIs()
     {
+
+        while (CatalystEarth.earthTransform == null)
+        {
+            yield return null;
+        }
 
         foreach (Site site in sites)
         {
