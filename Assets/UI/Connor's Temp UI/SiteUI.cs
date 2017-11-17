@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 // UI Class for selecting sites and their data types.
 public class SiteUI : MonoBehaviour {
@@ -11,16 +11,30 @@ public class SiteUI : MonoBehaviour {
 
     // Button prefab. Must be dragged in.
     public Object buttonPrefab;
+    public Object siteElementButtonPrefab;
+
+    // Button Description prefab. 
+    public Object buttonDescription;
 
     // Colors for selected/unselected buttons.
     public Color buttonActiveColor = Color.green;
     public Color buttonInactiveColor = Color.grey;
+    public Color buttonTextColor = Color.white;
+    public int siteButtonTextSize = 2;
+    public int dataButtonTextSize = 3;
+
+    // Button fonts
+    public Font latoBold;
+    public Font latoBlack;
+    public Font ralewayLight;
+    public Font ralewayBold;
+    public Font ralewayMedium;
 
     // Where buttons should start creating on the UI.
     public Vector2 siteButtonStartPos = Vector2.zero;
 
     // Space button buttons, vertically/horizontally.
-    public float horizontalBuffer = 0.5f;
+    public float horizontalBuffer = 1f;
     public float verticalBuffer = 0.5f;
 
     // Lists of the active buttons.
@@ -34,10 +48,6 @@ public class SiteUI : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        if (siteManager == null)
-        {
-            siteManager = GameManager.instance.GetComponentInChildren<SiteManager>();
-        }
         // Create the buttons as soon as the game starts.
         CreateButtons();
 
@@ -69,10 +79,10 @@ public class SiteUI : MonoBehaviour {
         }
 
         // If the right stick is pushed, move buttons left or right.
-        if (GamepadInput.GetDown(InputOption.RIGHT_STICK_HORIZONTAL))
+        if (GamepadInput.GetDown(InputOption.LEFT_STICK_HORIZONTAL))
         {
             // The direction of the stick. Helps us determine what direction it was pushed.
-            float stickValue = GamepadInput.GetInputValue(InputOption.RIGHT_STICK_HORIZONTAL);
+            float stickValue = GamepadInput.GetInputValue(InputOption.LEFT_STICK_HORIZONTAL);
 
             // If pushed to the right, move selected button to the right.
             if (stickValue > 0)
@@ -122,6 +132,12 @@ public class SiteUI : MonoBehaviour {
             // Instantiate the button from prefab, and add the SiteButton component. Name it the site name.
             SiteButton newButton = (GameObject.Instantiate(buttonPrefab) as GameObject).AddComponent<SiteButton>();
             newButton.gameObject.name = site.siteName;
+            newButton.GetComponentInChildren<Text>().color = buttonTextColor;
+            newButton.GetComponentInChildren<Text>().fontSize = siteButtonTextSize;
+            newButton.GetComponentInChildren<Text>().font = latoBlack;
+            newButton.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(35, 40);
+            
+           
 
             // Set the associated site.
             newButton.SetSite(site);
@@ -138,6 +154,9 @@ public class SiteUI : MonoBehaviour {
 
             // Color the button unselected.
             newButton.SetButtonColor(buttonInactiveColor);
+
+            //
+            newButton.SetDescription(site, latoBold);
 
 
         }
@@ -168,7 +187,7 @@ public class SiteUI : MonoBehaviour {
             SiteElementSet dataSet = dataSets[i];
 
             // Create the new button from component. Add the SiteElementButton script and give it a name.
-            SiteElementButton newButton = (GameObject.Instantiate(buttonPrefab) as GameObject).AddComponent<SiteElementButton>();
+            SiteElementButton newButton = (GameObject.Instantiate(siteElementButtonPrefab) as GameObject).AddComponent<SiteElementButton>();
             newButton.gameObject.name = dataSet.setType;
 
             // Be sure to set the data.
@@ -176,7 +195,10 @@ public class SiteUI : MonoBehaviour {
 
             // Determine this button's x and y position.
             float newXPos = i * (newButton.buttonSize.x + horizontalBuffer);
-            float newYPos = -siteButton.buttonSize.y - verticalBuffer;
+            float newYPos = -siteButton.buttonSize.y / 1.5f + verticalBuffer;
+
+            //Determine size of site element button
+            newButton.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(35, 10);
 
             // Set the parent and position of the button.
             newButton.transform.SetParent(siteButton.transform);
@@ -187,6 +209,11 @@ public class SiteUI : MonoBehaviour {
 
             // Set the button color to inactive.
             newButton.SetButtonColor(buttonInactiveColor);
+
+            // Set data button font size and color
+            newButton.GetComponentInChildren<Text>().fontSize = dataButtonTextSize;
+            newButton.GetComponentInChildren<Text>().color = buttonTextColor;
+            newButton.GetComponentInChildren<Text>().font = latoBold;
 
         }
 
@@ -203,16 +230,14 @@ public class SiteUI : MonoBehaviour {
     // Select a data type. Just call the activate function to load that data.
     public void SelectSiteSetButton(SiteElementButton siteElementButton)
     {
-
         siteElementButton.associatedElementSet.NextElement();
-        //SceneManager.LoadScene("DataScene");
     }
 
     // Move the site buttons in a direction. Direction should be -1 or 1
     public void MoveSiteButtons(int direction)
     {
 
-        // Make sure the new selection is within bounds.  
+        // Make sure the new selection is within bounds. 
         if (selectedSiteIndex + direction >= 0 && selectedSiteIndex + direction <= siteButtons.Count - 1)
         {
             
@@ -254,7 +279,7 @@ public class SiteUI : MonoBehaviour {
             }
 
             selectedElementIndex += direction;
-            siteElementButtons[selectedElementIndex].SetButtonColor(buttonActiveColor);
+            siteElementButtons[selectedSiteIndex].SetButtonColor(buttonActiveColor);
 
         }
     }

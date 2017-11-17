@@ -10,8 +10,8 @@
         {
           "id": 5,
           "name": "LuxorTempleFirstCourtNight",
-          "left_eye": "./Site_Data/Luxor/Panos/blue_ceiling-cube-L.tif",
-          "right_eye": "./Site_Data/Luxor/Panos/blue_ceiling-cube-R.tif",
+          "left_eye": "./Assets/Site_Data/Luxor/Panos/blue_ceiling-cube-L.tif",
+          "right_eye": "./Assets/Site_Data/Luxor/Panos/blue_ceiling-cube-R.tif",
           "description": "This CAVEcam was shot in the Luxor Temple showing the First Court of Ramesses II and the 14th Century Mosque of Abu al-Haggag, at night.  See: http://www.calit2.net/newsroom/rss.php?id=1862 and http://en.wikipedia.org/wiki/Luxor_Temple"
         },
         {
