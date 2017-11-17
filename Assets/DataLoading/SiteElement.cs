@@ -6,6 +6,7 @@ public abstract class SiteElement : MonoBehaviour
 {
 
     public bool loaded = false;
+    public bool failed = false;
 
     public Site parentSite;
 

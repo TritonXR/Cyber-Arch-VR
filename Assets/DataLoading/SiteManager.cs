@@ -11,6 +11,10 @@ public class SiteManager : MonoBehaviour {
     public List<Site> sites;
     // private GameManager gameManager;
 
+    public Object poiPrefab;
+    public Material poiActiveMat;
+    public Material poiInactiveMat;
+
     public static SiteElement activeSiteElement;
 
     void Awake()
@@ -74,22 +78,25 @@ public class SiteManager : MonoBehaviour {
 
         Debug.LogFormat("Loaded {0} sites", sites.Count);
 
-        // CreatePOIs();
+         CreatePOIs();
     }
 
-    /*
+    
     public void CreatePOIs()
     {
 
-        POIManager poiManager = gameManager.GetComponentInChildren<POIManager>();
-
-        foreach (CatalystSite site in sites)
+        foreach (Site site in sites)
         {
 
-            poiManager.CreateNewPOI(site);
+            POI newPOI = (GameObject.Instantiate(poiPrefab) as GameObject).GetComponent<POI>();
+            newPOI.SetAssociatedSite(site);
+            newPOI.activeMat = poiActiveMat;
+            newPOI.inactiveMat = poiInactiveMat;
 
         }
     }
+
+    /*
 
     public IEnumerator PlacePOIsWhenReady()
     {
