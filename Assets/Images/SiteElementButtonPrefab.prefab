@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 114845492375703250}
   - component: {fileID: 114414145316031788}
   m_Layer: 5
-  m_Name: RectanglePrefab
+  m_Name: SiteElementButtonPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -114,7 +114,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 114845492375703250}
+  m_TargetGraphic: {fileID: 0}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -139,7 +139,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 3b90dbc89f1b2d742a77f8613648bf3f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5e74ace7bdf379b47b8de07cb2d9bb20, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

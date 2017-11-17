@@ -11,6 +11,7 @@ public class SiteUI : MonoBehaviour {
 
     // Button prefab. Must be dragged in.
     public Object buttonPrefab;
+    public Object siteElementButtonPrefab;
 
     // Button Description prefab. 
     public Object buttonDescription;
@@ -19,8 +20,8 @@ public class SiteUI : MonoBehaviour {
     public Color buttonActiveColor = Color.green;
     public Color buttonInactiveColor = Color.grey;
     public Color buttonTextColor = Color.white;
-    public int siteButtonTextSize = 3;
-    public int dataButtonTextSize = 4;
+    public int siteButtonTextSize = 2;
+    public int dataButtonTextSize = 3;
 
     // Button fonts
     public Font latoBold;
@@ -33,7 +34,7 @@ public class SiteUI : MonoBehaviour {
     public Vector2 siteButtonStartPos = Vector2.zero;
 
     // Space button buttons, vertically/horizontally.
-    public float horizontalBuffer = 0.5f;
+    public float horizontalBuffer = 1f;
     public float verticalBuffer = 0.5f;
 
     // Lists of the active buttons.
@@ -134,7 +135,7 @@ public class SiteUI : MonoBehaviour {
             newButton.GetComponentInChildren<Text>().color = buttonTextColor;
             newButton.GetComponentInChildren<Text>().fontSize = siteButtonTextSize;
             newButton.GetComponentInChildren<Text>().font = latoBlack;
-            newButton.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(25, 35);
+            newButton.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(35, 40);
             
            
 
@@ -186,7 +187,7 @@ public class SiteUI : MonoBehaviour {
             SiteElementSet dataSet = dataSets[i];
 
             // Create the new button from component. Add the SiteElementButton script and give it a name.
-            SiteElementButton newButton = (GameObject.Instantiate(buttonPrefab) as GameObject).AddComponent<SiteElementButton>();
+            SiteElementButton newButton = (GameObject.Instantiate(siteElementButtonPrefab) as GameObject).AddComponent<SiteElementButton>();
             newButton.gameObject.name = dataSet.setType;
 
             // Be sure to set the data.
@@ -197,7 +198,7 @@ public class SiteUI : MonoBehaviour {
             float newYPos = -siteButton.buttonSize.y / 1.5f + verticalBuffer;
 
             //Determine size of site element button
-            newButton.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(25, 10);
+            newButton.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(35, 10);
 
             // Set the parent and position of the button.
             newButton.transform.SetParent(siteButton.transform);
