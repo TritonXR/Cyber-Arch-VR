@@ -9,7 +9,7 @@ public class StatusText : MonoBehaviour {
     private static GameObject parentCanvas;
     private static Vector3 positionFromCameraToCanvas;
 
-    public void Awake()
+    public void Start()
     {
         if (statusText == null)
         {

@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 // UI Class for selecting sites and their data types.
 public class SiteUI : MonoBehaviour {
 
+    public static SiteUI instance;
+
     // Site manager. Must be dragged in.
     private SiteManager siteManager;
 
@@ -47,6 +49,18 @@ public class SiteUI : MonoBehaviour {
     private int selectedSiteIndex = 0;
     private int selectedElementIndex = -1;
 
+
+    void Awake()
+    {
+        if (instance)
+        {
+            instance = null;
+        }
+
+        instance = this;
+    }
+
+
 	// Use this for initialization
 	void Start ()
     {
@@ -62,63 +76,67 @@ public class SiteUI : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-		
-        // If the A button is pressed, select the active button.
-        if (GamepadInput.GetDown(InputOption.A_BUTTON))
+
+        if (!VRDevice.isPresent)
         {
 
-            // If there's no selected element, we first must choose a site. Otherwise, select the data type.
-            if (selectedElementIndex < 0)
+            // If the A button is pressed, select the active button.
+            if (GamepadInput.GetDown(InputOption.A_BUTTON))
             {
-                SelectSiteButton(siteButtons[selectedSiteIndex]);
-            }
-            else
-            {
-                SelectSiteSetButton(siteElementButtons[selectedElementIndex]);
-            }
-        }
 
-        // If B is pressed, go back and deselect the active element.
-        if (GamepadInput.GetDown(InputOption.B_BUTTON))
-        {
-            ClearElementButtons();
-        }
-
-        // If the right stick is pushed, move buttons left or right.
-        if (GamepadInput.GetDown(InputOption.LEFT_STICK_HORIZONTAL))
-        {
-            // The direction of the stick. Helps us determine what direction it was pushed.
-            float stickValue = GamepadInput.GetInputValue(InputOption.LEFT_STICK_HORIZONTAL);
-
-            // If pushed to the right, move selected button to the right.
-            if (stickValue > 0)
-            {
-                // If there's no selected element, move the site buttons. Otherwise move the data type buttons.
+                // If there's no selected element, we first must choose a site. Otherwise, select the data type.
                 if (selectedElementIndex < 0)
                 {
-                    MoveSiteButtons(1);
+                    SelectSiteButton(siteButtons[selectedSiteIndex]);
                 }
                 else
                 {
-                    MoveElementButtons(1);
+                    SelectSiteSetButton(siteElementButtons[selectedElementIndex]);
                 }
-
-                siteButtons[selectedSiteIndex].associatedSite.associatedPOI.SetSelected(true);
             }
 
-            // If pushed to the left, move selected button to the left.
-            else if (stickValue < 0)
+            // If B is pressed, go back and deselect the active element.
+            if (GamepadInput.GetDown(InputOption.B_BUTTON))
             {
-                if (selectedElementIndex < 0)
+                ClearElementButtons();
+            }
+
+            // If the right stick is pushed, move buttons left or right.
+            if (GamepadInput.GetDown(InputOption.LEFT_STICK_HORIZONTAL))
+            {
+                // The direction of the stick. Helps us determine what direction it was pushed.
+                float stickValue = GamepadInput.GetInputValue(InputOption.LEFT_STICK_HORIZONTAL);
+
+                // If pushed to the right, move selected button to the right.
+                if (stickValue > 0)
                 {
-                    MoveSiteButtons(-1);
-                }
-                else
-                {
-                    MoveElementButtons(-1);
+                    // If there's no selected element, move the site buttons. Otherwise move the data type buttons.
+                    if (selectedElementIndex < 0)
+                    {
+                        MoveSiteButtons(1);
+                    }
+                    else
+                    {
+                        MoveElementButtons(1);
+                    }
+
+                    siteButtons[selectedSiteIndex].associatedSite.associatedPOI.SetSelected(true);
                 }
 
-                siteButtons[selectedSiteIndex].associatedSite.associatedPOI.SetSelected(true);
+                // If pushed to the left, move selected button to the left.
+                else if (stickValue < 0)
+                {
+                    if (selectedElementIndex < 0)
+                    {
+                        MoveSiteButtons(-1);
+                    }
+                    else
+                    {
+                        MoveElementButtons(-1);
+                    }
+
+                    siteButtons[selectedSiteIndex].associatedSite.associatedPOI.SetSelected(true);
+                }
             }
         }
 	}
@@ -145,6 +163,8 @@ public class SiteUI : MonoBehaviour {
     {
         // Set up lists to hold sites.
         siteButtons = new List<SiteButton>();
+        // Initialize this list.
+        siteElementButtons = new List<SiteElementButton>();
 
         // Get all the sites from the site manager.
         List<Site> allSites = siteManager.sites;
@@ -213,8 +233,9 @@ public class SiteUI : MonoBehaviour {
     // Select a site button (i.e. "Luxor", "Mar Saba", etc.)
     public void SelectSiteButton(SiteButton siteButton)
     {
-        // Initialize this list.
-        siteElementButtons = new List<SiteElementButton>();
+        Debug.LogWarning("select site button called" + siteButton.name);
+
+
 
         // Get all the data types associated with that site.
         List<SiteElementSet> dataSets = siteButton.associatedSite.dataSets;

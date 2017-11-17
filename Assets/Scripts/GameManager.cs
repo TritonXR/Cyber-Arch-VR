@@ -29,6 +29,11 @@ public class GameManager : MonoBehaviour
 
     public Object labelPrefab;
 
+    public SteamVR_TrackedController leftController;
+    public SteamVR_TrackedController rightController;
+    private bool isMenuPressed = false;
+    private bool isTriggerPressed = false;
+
     public enum State
     {
 
@@ -124,19 +129,35 @@ public class GameManager : MonoBehaviour
             CAVECameraRig.instance.Toggle3D();
         }
 
-        if (GamepadInput.GetDown(InputOption.BACK_BUTTON))
+        if (GamepadInput.GetDown(InputOption.BACK_BUTTON) || rightController.menuPressed || leftController.menuPressed)
         {
-            Debug.Log("HOME PRESSED");
-            // Loads the first scene. Assumed to be the home scene.
-            GoHome();
+            if (!isMenuPressed)
+            {
+                isMenuPressed = true;
+                Debug.Log("HOME PRESSED");
+                // Loads the first scene. Assumed to be the home scene.
+                GoHome();
+            }
+            
+        } else
+        {
+            isMenuPressed = false;
         }
 
-        if (GamepadInput.GetDown(InputOption.A_BUTTON))
+        if (GamepadInput.GetDown(InputOption.A_BUTTON) || rightController.triggerPressed || leftController.triggerPressed)
         {
-            if (SiteManager.activeSiteElementSet != null)
+            if (!isTriggerPressed)
             {
-                SiteManager.activeSiteElementSet.NextElement();
+                isTriggerPressed = true;
+                if (SiteManager.activeSiteElementSet != null)
+                {
+                    SiteManager.activeSiteElementSet.NextElement();
+                }
             }
+            
+        } else
+        {
+            isTriggerPressed = false;
         }
     }
 }
