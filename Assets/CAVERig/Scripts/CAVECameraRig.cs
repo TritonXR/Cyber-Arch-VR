@@ -13,6 +13,19 @@ public class CAVECameraRig : MonoBehaviour
     // Static bool to keep track of whether or not we're in 3D mode.
     public static bool is3D = false;
 
+    public static bool isCAVE
+    {
+        get
+        {
+            if (CAVECameraRig.instance != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+    }
+
     // Lists of left and right eye cameras.
     public static List<Camera> leftEyeCameras;
     public static List<Camera> rightEyeCameras;

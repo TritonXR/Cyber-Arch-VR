@@ -25,8 +25,17 @@ public class CatalystEarth : MonoBehaviour {
     private void Awake()
     {
 
-        CalculateRadius();
-        earthTransform = this.transform;
+        if (earthTransform == null)
+        {
+            CalculateRadius();
+            earthTransform = this.transform;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            GameObject.Destroy(this.gameObject);
+        }
+
 
     }
 
@@ -148,5 +157,15 @@ public class CatalystEarth : MonoBehaviour {
 
         earthTransform.transform.Rotate(earthTransform.transform.up, angle - totalAngleRotated);
 
+    }
+
+    public static void Hide()
+    {
+        earthTransform.gameObject.SetActive(false);
+    }
+
+    public static void Show()
+    {
+        earthTransform.gameObject.SetActive(true);
     }
 }

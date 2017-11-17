@@ -55,8 +55,10 @@ public abstract class SiteElement : MonoBehaviour
 
     private IEnumerator WaitForLoad()
     {
+        StatusText.Show();
         yield return StartCoroutine(LoadCoroutine());
         loaded = true;
+        StatusText.Hide();
     }
 
     private IEnumerator WaitForUnload()

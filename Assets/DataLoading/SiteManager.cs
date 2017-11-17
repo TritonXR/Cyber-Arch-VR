@@ -5,6 +5,8 @@ using System.IO;
 
 public class SiteManager : MonoBehaviour {
 
+    public static SiteManager instance;
+
     public string pathToDataJsonFile = "./Config_Files/site_data.json";
 
     [HideInInspector]
@@ -15,11 +17,18 @@ public class SiteManager : MonoBehaviour {
     public Material poiActiveMat;
     public Material poiInactiveMat;
 
+
     public static SiteElement activeSiteElement;
 
     void Awake()
     {
-        LoadSites(pathToDataJsonFile);
+
+        if (instance == null)
+        {
+            instance = this;
+            LoadSites(pathToDataJsonFile);
+        }
+
     }
 
     public void LoadSites(string dataPath)

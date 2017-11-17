@@ -103,75 +103,69 @@ public class Panorama : SiteElement
 
         else {
 
-            List<Texture2D> leftTextures = new List<Texture2D>();
-            List<Texture2D> rightTextures = new List<Texture2D>();
+            yield return StartCoroutine(LoadAndSaveCubemapMaterials(rightEyePath, true));
 
-            StatusText.SetText("Loading left textures from tif");
-
-            // Stage 1: Load Textures
-            if (Directory.Exists(GetCacheDirectory(leftEyePath)))
+            if (CAVECameraRig.isCAVE)
             {
-                yield return StartCoroutine(GetTexturesFromCache(leftEyePath, leftTextures));
+                yield return StartCoroutine(LoadAndSaveCubemapMaterials(leftEyePath, false));
             }
             else
             {
-                yield return StartCoroutine(GetTexturesFromTif(leftEyePath, leftTextures));
+                leftEye = rightEye;
             }
-
-            StatusText.SetText("Loading right textures from tif");
-
-            if (Directory.Exists(GetCacheDirectory(rightEyePath)))
-            {
-                yield return StartCoroutine(GetTexturesFromCache(rightEyePath, rightTextures));
-            }
-            else
-            {
-                yield return StartCoroutine(GetTexturesFromTif(rightEyePath, rightTextures));
-            }
-            
-          //  yield return StartCoroutine(GetTexturesFromTif(leftEyePath, leftTextures));
-
-
-           // yield return StartCoroutine(GetTexturesFromTif(rightEyePath, rightTextures));
-
-            int leftTexSize = leftTextures[0].width;
-            int rightTexSize = rightTextures[0].width;
-
-            TextureFormat format = leftTextures[0].format;
-
-            StatusText.SetText("Creating cubemaps");
-
-            // Stage 2: Create Cubemaps
-            Cubemap leftCubemap = new Cubemap(leftTexSize, format, false);
-            Cubemap rightCubemap = new Cubemap(rightTexSize, format, false);
-
-            Debug.LogFormat("Left Tex Size: {0}", leftTexSize);
-            Debug.LogFormat("Right Tex Size: {0}", rightTexSize);
-
-            yield return StartCoroutine(CreateCubemapFromTextures(leftTextures, leftCubemap));
-            yield return StartCoroutine(CreateCubemapFromTextures(rightTextures, rightCubemap));
-
-            leftCubemap.Apply();
-            rightCubemap.Apply();
-
-            Debug.Log("Created Cubemaps");
-
-            Debug.LogFormat("LEFT CUBEMAP: {0}", leftCubemap);
-
-            yield return null;
-
-            // Stage 3: Apply textures
-            leftEye = new Material(Shader.Find("Skybox/Cubemap"));
-            rightEye = new Material(Shader.Find("Skybox/Cubemap"));
-
-            leftEye.SetTexture(Shader.PropertyToID("_Tex"), leftCubemap);
-            rightEye.SetTexture(Shader.PropertyToID("_Tex"), rightCubemap);
 
             loaded = true;
 
             yield return null;
 
         }
+    }
+
+    public IEnumerator LoadAndSaveCubemapMaterials(string path, bool isRightEye)
+    {
+        List<Texture2D> textures = new List<Texture2D>();
+
+        if (Directory.Exists(GetCacheDirectory(path)))
+        {
+            StatusText.SetText("Loading textures from cache");
+
+
+            yield return StartCoroutine(GetTexturesFromCache(path, textures));
+        }
+        else
+        {
+            StatusText.SetText("Loading textures from tif");
+
+            yield return StartCoroutine(GetTexturesFromTif(path, textures));
+        }
+
+        int texSize = textures[0].width;
+        TextureFormat format = textures[0].format;
+
+        StatusText.SetText("Creating cubemap");
+
+        yield return null;
+
+        Cubemap cubemap = new Cubemap(texSize, format, false);
+
+        yield return StartCoroutine(CreateCubemapFromTextures(textures, cubemap));
+
+        cubemap.Apply();
+
+        Material eyeMat = new Material(Shader.Find("Skybox/Cubemap"));
+        eyeMat.SetTexture(Shader.PropertyToID("_Tex"), cubemap);
+
+        if (isRightEye)
+        {
+            rightEye = eyeMat;
+        }
+        else
+        {
+            leftEye = eyeMat;
+        }
+
+        loaded = true;
+
     }
 
     protected override IEnumerator UnloadCoroutine()

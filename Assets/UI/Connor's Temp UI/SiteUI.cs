@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 // UI Class for selecting sites and their data types.
 public class SiteUI : MonoBehaviour {
 
     // Site manager. Must be dragged in.
-    public SiteManager siteManager;
+    private SiteManager siteManager;
 
     // Button prefab. Must be dragged in.
     public Object buttonPrefab;
@@ -48,6 +49,10 @@ public class SiteUI : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
+        if (siteManager == null)
+        {
+            siteManager = SiteManager.instance;
+        }
         // Create the buttons as soon as the game starts.
         CreateButtons();
 
@@ -230,7 +235,9 @@ public class SiteUI : MonoBehaviour {
     // Select a data type. Just call the activate function to load that data.
     public void SelectSiteSetButton(SiteElementButton siteElementButton)
     {
+        CatalystEarth.Hide();
         siteElementButton.associatedElementSet.NextElement();
+        SceneManager.LoadScene("DataScene");
     }
 
     // Move the site buttons in a direction. Direction should be -1 or 1

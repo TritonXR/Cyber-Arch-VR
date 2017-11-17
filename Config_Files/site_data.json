@@ -10,22 +10,30 @@
         {
           "id": 5,
           "name": "LuxorTempleFirstCourtNight",
-          "left_eye": "./Assets/Site_Data/Luxor/Panos/blue_ceiling-cube-L.tif",
-          "right_eye": "./Assets/Site_Data/Luxor/Panos/blue_ceiling-cube-R.tif",
+          "left_eye": "Site_Data/5__LuxorTempleFirstCourtNight__left.tif",
+          "right_eye": "Site_Data/5__LuxorTempleFirstCourtNight__right.tif",
           "description": "This CAVEcam was shot in the Luxor Temple showing the First Court of Ramesses II and the 14th Century Mosque of Abu al-Haggag, at night.  See: http://www.calit2.net/newsroom/rss.php?id=1862 and http://en.wikipedia.org/wiki/Luxor_Temple"
         },
         {
           "id": 7,
           "name": "LuxorMedinetHabuHypostyle",
-          "left_eye": "CAVEkiosk_SiteData/P1220731-Panorama-L.tif",
-          "right_eye": "CAVEkiosk_SiteData/P1220731-Panorama-R.tif",
+          "left_eye": "Site_Data/7__LuxorMedinetHabuHypostyle__left.tif",
+          "right_eye": "Site_Data/7__LuxorMedinetHabuHypostyle__right.tif",
           "description": "This CAVEcam was shot in the Temple of Ramesses III at Medinet Habu. This is outside of the columns CAVEcam shot and the Royal Treasure Halls.\nSee: http://www.calit2.net/newsroom/rss.php?id=1862\nand http://en.wikipedia.org/wiki/Medinet_Habu_(temple)"
+        },
+        {
+
+          "id": 14,
+          "name": "LuxorKarnakObelisks",
+          "left_eye": "Site_Data/14__LuxorKarnakObelisks__left.tif",
+          "right_eye": "Site_Data/14__LuxorKarnakObelisks__right.tif",
+          "description": "Shown in this CAVEcam is a portion of the Temple of Karnak, on the Luxor side of the Nile. The Obelisk of Tuthmosis is prominent and the Obelisk of Hatshepsut is further back. Greg Wickham is seated with temple guards in the shade. See: http://www.calit2.net/newsroom/rss.php?id=1862 and http://en.wikipedia.org/wiki/Karnak"
         },
         {
           "id": 15,
           "name": "LuxorMedinetHabuColumnsBlueCeiling",
-          "left_eye": "CAVEkiosk_SiteData/P1220891-Panorama-L.tif",
-          "right_eye": "CAVEkiosk_SiteData/P1220891-Panorama-R.tif",
+          "left_eye": "Site_Data/15__LuxorMedinetHabuColumnsBlueCeiling__left.tif",
+          "right_eye": "Site_Data/15__LuxorMedinetHabuColumnsBlueCeiling__right.tif",
           "description": "This CAVEcam was shot in the Temple of Ramesses III at Medinet Habu. Of particular interest is the existing colors on the columns and ceilings, and the clear graffiti from 1817 and 1818. The overexposed portions of the image were, of course, due to the bright sunlight, and inspired subsequent taking of multiple exposures to attempt high-dynamic range (HDR) captures of scenes like this. See: http://www.calit2.net/newsroom/rss.php?id=1862 and http://en.wikipedia.org/wiki/Medinet_Habu_(temple)"
         }
       ],
@@ -56,9 +64,16 @@
         {
           "id": 26,
           "name": "Madaen-Saleh-Al-Diwan",
-          "left_eye": "CAVEkiosk_SiteData/P1120084-Panorama-L.tif",
-          "right_eye": "CAVEkiosk_SiteData/P1120084-Panorama-R.tif",
+          "left_eye": "Site_Data/26__Madaen-Saleh-Al-Diwan__left.tif",
+          "right_eye": "Site_Data/26__Madaen-Saleh-Al-Diwan__right.tif",
           "description": "This image shows a large chamber hall (Al-Diwan) carved from the sandstone"
+        },
+        {
+          "id": 140,
+          "name": "Madaen-Saleh-AlKhuraymat",
+          "left_eye": "Site_Data/140__Madaen-Saleh-AlKhuraymat__left.tif",
+          "right_eye": "Site_Data/140__Madaen-Saleh-AlKhuraymat__right.tif",
+          "description": "Madain Saleh is the southernmost outpost of the Nabateans; these tombs are from the first century,"
         }
       ],
       "images": [
@@ -71,32 +86,25 @@
       ]
     },
     {
-      "name": "Iraq",
-      "description": "St. Elijah's Monastery in Iraq was destroyed by Isis",
-      "latitude": 36.2925,
-      "longitude": 43.1309,
-
-      "images": [
-        {
-          "id": 22,
-          "name": "St. Elijah Monastery",
-          "image": "elijah_monastry.jpg",
-          "description": "Destroyed monastery in Iraq"
-        }
-      ]
-    },
-    {
       "name": "Ushaiger",
       "description": "Ushaiger in Saudi Arabia was a major stopping pong for pilgrams from Iraq and Iran and is currently being reconstructed",
       "latitude": 25.3472,
       "longitude": 45.1822,
 
-      "images": [
+      "panos": [
         {
-          "id": 66,
-          "name": "Ushaiger",
-          "image": "ushaiger.jpg",
+          "id": 201,
+          "name": "Ushaiger-Courtyard-2",
+          "left_eye": "Site_Data/201__Ushaiger-Courtyard-2__left.tif",
+          "right_eye": "Site_Data/201__Ushaiger-Courtyard-2__right.tif",
           "description": "Image of reconstruction process"
+        },
+        {
+          "id": 203,
+          "name": "Ushaiger-Ruin",
+          "left_eye": "Site_Data/203__Ushaiger-Ruin__left.tif",
+          "right_eye": "Site_Data/203__Ushaiger-Ruin__right.tif",
+          "description": "This is what many of the buildings in Ushaiger look like before remodeling."
         }
       ]
     },
@@ -152,8 +160,8 @@
         {
           "id": 307,
           "name": "Botanical Garden Pavillion",
-          "left_eye": "BotanicalGarden1Left.tif",
-          "right_eye": "BotanicalGarden1Right.tif",
+          "left_eye": "Site_Data/307__Botanical_Garden_Pavillion__left.tif",
+          "right_eye": "Site_Data/307__Botanical_Garden_Pavillion__right.tif",
           "description": "Botanical Garden pavillion in Melbourne, Australia"
         }
       ],
@@ -167,7 +175,7 @@
       ]
     },
     {
-      "name": "Italy Site",
+      "name": "Italy",
       "description": "Monumnet in Florence",
       "latitude": 43.7696,
       "longitude": 11.2558,
@@ -175,19 +183,10 @@
         {
           "id": 13,
           "name": "Florence-Duomo-3",
-          "left_eye": "Florence_Duomo_LEFT_Pan03.tif",
-          "right_eye": "Florence_Duomo_RIGHT_Pan03.tif",
+          "left_eye": "Site_Data/13__Florence-Duomo-3__left.tif",
+          "right_eye": "Site_Data/13__Florence-Duomo-3__right.tif",
           "description": "Standing on the roof of the Santa Maria del Fiore Cathedral in Florence, Italy"
-        },
-
-        {
-          "id": 167,
-          "name": "SantuarioAnglona3",
-          "left_eye": "SantuarioAnglona_LEFT_Pan03.tif",
-          "right_eye": "SantuarioAnglona_RIGHT_Pan03.tif",
-          "description": "Standing inside Santuario di Santa Maria Regina di Anglona in Tursi, Italy"
         }
-
       ],
       "videos": [
         {
@@ -213,7 +212,7 @@
       ]
     },
     {
-      "name": "Greece Site",
+      "name": "Greece",
       "description": "Steno greece pan collection",
       "latitude": 39.0742,
       "longitude": 21.8243,
@@ -221,36 +220,36 @@
         {
           "id": 309,
           "name": "Eastern Bay, Steno, Greece",
-          "left_eye": "EasternBayLeft.tif",
-          "right_eye": "EasternBayRight.tif",
+          "left_eye": "Site_Data/309__Eastern_Bay_Steno_Greece__left.tif",
+          "right_eye": "Site_Data/309__Eastern_Bay_Steno_Greece__right.tif",
           "description": "This CAVEcam shows one of the small bays immediately south of the Steno archaeological site in Greece (located southeast of modern Delphi in the Antikyra Bay). Two bays (eastern and western) are separated by a small peninsula. These images were captured as part of the efforts to reconstruct the ancient climate and landscape of the region (directed by Thomas E. Levy). For more information see http://ccas.ucsd.edu/greece.php."
         },
         {
           "id": 310,
           "name": "Peninsula, Steno, Greece",
-          "left_eye": "PeninsulaBetweenBaysLeft.tif",
-          "right_eye": "PeninsulaBetweenBaysRight.tif",
+          "left_eye": "Site_Data/310__Peninsula_Steno_Greece__left.tif",
+          "right_eye": "Site_Data/310__Peninsula_Steno_Greece__right.tif",
           "description": "This CAVEcam was captured on the small peninsula between the Eastern and Western bays south of Steno archaeological site located southeast of modern Delphi in the Antikyra Bay in Greece (see eastern and western bay CAVEcams). These images were captured as part of the efforts to reconstruct the ancient climate and landscape of the region; the boat seen in the bay was collecting cores as the main data collection for the project (directed by Thomas E. Levy). For more information see http://ccas.ucsd.edu/greece.php."
         },
         {
           "id": 311,
           "name": "Steno, Greece",
-          "left_eye": "TopOfStenoLeft.tif",
-          "right_eye": "TopOfStenoRight.tif",
+          "left_eye": "Site_Data/311__Steno_Greece__left.tif",
+          "right_eye": "Site_Data/311__Steno_Greece__right.tif",
           "description": "This CAVEcam was captured from the Steno archaeological site in Greece which sits atop a small hill (located southeast of modern Delphi in the Antikyra Bay). The two bays south of the site are visible - see the Eastern and Western Bay CAVEcams. These images were captured as part of the efforts to reconstruct the ancient climate and landscape of the region (directed by Thomas E. Levy). For more information see http://ccas.ucsd.edu/greece.php."
         },
         {
           "id": 312,
           "name": "Western Bay, Steno, Greece",
-          "left_eye": "WesternBayLeft.tif",
-          "right_eye": "WesternBayRight.tif",
+          "left_eye": "Site_Data/312__Western_Bay_Steno_Greece__left.tif",
+          "right_eye": "Site_Data/312__Western_Bay_Steno_Greece__right.tif",
           "description": "This CAVEcam shows one of the small bays immediately south of the Steno archaeological site in Greece (located southeast of modern Delphi in the Antikyra Bay). Two bays (eastern and western) are separated by a small peninsula. These images were captured as part of the efforts to reconstruct the ancient climate and landscape of the region; the boat in the bay was collecting cores as the main data collection for the project (directed by Thomas E. Levy). For more information see http://ccas.ucsd.edu/greece.php."
         },
         {
           "id": 313,
           "name": "Tomb Excavation, Kastrouli, Greece",
-          "left_eye": "ExcavatedAreaLeft.tif",
-          "right_eye": "ExcavatedAreaRight.tif",
+          "left_eye": "Site_Data/313__Tomb_Excavation_Kastrouli_Greece__left.tif",
+          "right_eye": "Site_Data/313__Tomb_Excavation_Kastrouli_Greece__right.tif",
           "description": "This CAVEcam shows the excavation area from the 2016 excavations at Kastrouli, Greece directed by Thomas E. Levy (University of California, San Diego), Athanasios Sideris (Thrace Foundation), and Ioannis Liritzis (University of the Aegean). Excavations focused on a previously disturbed tomb likely dating the Late Bronze Age (ca. 1550-1200 BCE). Kastrouli is a Mycenaean site with a circular fortification wall located southeast of modern Delphi in the Desfina plateau. For more information on the site see Liritzis, I. et al. LATE HELLADIC AND LATER REUSE PHASES OF KASTROULI SETTLEMENT (GREECE): PRELIMINARY DATING RESULTS Mediterranean Archaeology and Archaeometry, Vol. 16, No 3, (2016), pp. 245-250."
         }
       ]

@@ -9,8 +9,18 @@ public class StatusText : MonoBehaviour {
 
     public void Awake()
     {
+        if (statusText == null)
+        {
+            statusText = GetComponent<Text>();
+            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(transform.parent.gameObject);
+            Hide();
+        }
+        else
+        {
+            GameObject.Destroy(this.gameObject);
 
-        statusText = GetComponent<Text>();
+        }
 
     }
 
@@ -21,7 +31,22 @@ public class StatusText : MonoBehaviour {
             statusText.text = text;
 
         }
-
     }
 
+    public static void Show()
+    {
+        if (statusText != null)
+        {
+            statusText.gameObject.SetActive(true);
+
+        }
+    }
+
+    public static void Hide()
+    {
+        if (statusText != null)
+        {
+            statusText.gameObject.SetActive(false);
+        }
+    }
 }

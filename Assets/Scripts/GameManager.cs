@@ -95,6 +95,7 @@ public class GameManager : MonoBehaviour
 
     public void GoHome()
     {
+        Debug.Log("GOING HOME");
         
         if (SiteManager.activeSiteElement != null)
         {
@@ -108,6 +109,8 @@ public class GameManager : MonoBehaviour
         // PlatformMonitor.ResetMonitorText();
 
         SiteManager siteManager = GetComponentInChildren<SiteManager>();
+
+        CatalystEarth.Show();
 
         // siteManager.StartCoroutine(siteManager.PlacePOIsWhenReady());
 
@@ -123,6 +126,7 @@ public class GameManager : MonoBehaviour
 
         if (GamepadInput.GetDown(InputOption.BACK_BUTTON))
         {
+            Debug.Log("HOME PRESSED");
             // Loads the first scene. Assumed to be the home scene.
             GoHome();
         }
