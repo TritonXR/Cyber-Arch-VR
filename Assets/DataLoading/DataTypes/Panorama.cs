@@ -331,7 +331,7 @@ public class Panorama : SiteElement
 
         yield return StartCoroutine(LoadImagesAsTextures(images, textures));
 
-        StartCoroutine(CacheTextures(textures, tifPath));
+        yield return StartCoroutine(CacheTextures(textures, tifPath));
 
     }
 
