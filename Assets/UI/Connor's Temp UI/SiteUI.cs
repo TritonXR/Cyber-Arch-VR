@@ -142,8 +142,6 @@ public class SiteUI : MonoBehaviour {
             newButton.GetComponentInChildren<Text>().font = latoBlack;
             newButton.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(35, 40);
             
-           
-
             // Set the associated site.
             newButton.SetSite(site);
 
