@@ -124,7 +124,7 @@ public class GameManager : MonoBehaviour
             CAVECameraRig.instance.Toggle3D();
         }
 
-        if (GamepadInput.GetDown(InputOption.BACK_BUTTON))
+        if (GamepadInput.GetDown(InputOption.B_BUTTON))
         {
             Debug.Log("HOME PRESSED");
             // Loads the first scene. Assumed to be the home scene.
