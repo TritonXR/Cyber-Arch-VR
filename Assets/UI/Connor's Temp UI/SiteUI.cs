@@ -254,6 +254,7 @@ public class SiteUI : MonoBehaviour {
         CatalystEarth.Hide();
         siteElementButton.associatedElementSet.NextElement();
         SceneManager.LoadScene("DataScene");
+        
     }
 
     // Move the site buttons in a direction. Direction should be -1 or 1
