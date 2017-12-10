@@ -93,8 +93,17 @@ public class Panorama : SiteElement
 
         Debug.Log("Loading " + camData.name);
 
-        leftEyePath = camData.cube4096.left;
-        rightEyePath = camData.cube4096.right;
+        if (camData.cube4096 == null || string.IsNullOrEmpty(camData.cube4096.left) || string.IsNullOrEmpty(camData.cube4096.right))
+        {
+            leftEyePath = camData.cube1024.left;
+            rightEyePath = camData.cube1024.right;
+        }
+        else
+        {
+            leftEyePath = camData.cube4096.left;
+            rightEyePath = camData.cube4096.right;
+        }
+
 
         if (!File.Exists(leftEyePath) || !File.Exists(rightEyePath))
         {

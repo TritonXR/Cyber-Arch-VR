@@ -7,7 +7,7 @@ public class SiteManager : MonoBehaviour {
 
     public static SiteManager instance;
 
-    public string pathToDataJsonFile = "./Config_Files/site_data.json";
+    public string pathToJSONConfigFile = "./Config_Files/data_path.json";
 
     [HideInInspector]
     public List<Site> sites;
@@ -27,7 +27,13 @@ public class SiteManager : MonoBehaviour {
         if (instance == null)
         {
             instance = this;
-            LoadSites(pathToDataJsonFile);
+
+            string pathFileJSON = File.ReadAllText(pathToJSONConfigFile);
+            PathToJSONData pathToJSONData = JsonUtility.FromJson<PathToJSONData>(pathFileJSON);
+
+            string dataPath = pathToJSONData.pathToDataJSONFile;
+
+            LoadSites(dataPath);
         }
 
     }
@@ -35,7 +41,7 @@ public class SiteManager : MonoBehaviour {
     public void LoadSites(string dataPath)
     {
 
-        if (!File.Exists(pathToDataJsonFile))
+        if (!File.Exists(dataPath))
         {
 
             SerializableSites sampleSites = new SerializableSites();
@@ -54,13 +60,13 @@ public class SiteManager : MonoBehaviour {
 
             string jsonText = JsonUtility.ToJson(sampleSites);
 
-            File.WriteAllText(pathToDataJsonFile, jsonText);
+            File.WriteAllText(dataPath, jsonText);
 
             return;
 
         }
 
-        string jsonString = File.ReadAllText(pathToDataJsonFile);
+        string jsonString = File.ReadAllText(dataPath);
 
         SerializableSites siteData = JsonUtility.FromJson<SerializableSites>(jsonString);
 
@@ -134,6 +140,14 @@ public class SiteManager : MonoBehaviour {
     {
 
         public SerializableSite[] sites;
+   
+    }
+
+    [System.Serializable]
+    private class PathToJSONData
+    {
+
+        public string pathToDataJSONFile;
 
     }
 }
