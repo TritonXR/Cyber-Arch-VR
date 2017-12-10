@@ -49,6 +49,8 @@ public class GameManager : MonoBehaviour
         HandleSingleton();
         SetupGameManagers();
 
+
+
     }
 
     public void HandleSingleton()
@@ -119,12 +121,12 @@ public class GameManager : MonoBehaviour
     public void Update()
     {
 
-        if (GamepadInput.GetDown(InputOption.START_BUTTON) && CAVECameraRig.instance != null)
+        if (GamepadInput.GetDown(InputOption.BACK_BUTTON) && CAVECameraRig.instance != null)
         {
             CAVECameraRig.instance.Toggle3D();
         }
 
-        if (GamepadInput.GetDown(InputOption.BACK_BUTTON))
+        if (GamepadInput.GetDown(InputOption.B_BUTTON))
         {
             Debug.Log("HOME PRESSED");
             // Loads the first scene. Assumed to be the home scene.
@@ -138,5 +140,6 @@ public class GameManager : MonoBehaviour
                 SiteManager.activeSiteElementSet.NextElement();
             }
         }
+
     }
 }

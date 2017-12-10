@@ -44,6 +44,7 @@ public class SiteUI : MonoBehaviour {
 
     // Active indices for the selected buttons.
     private int selectedSiteIndex = 0;
+    private int initialSelectedSiteIndex = 0;
     private int selectedElementIndex = -1;
 
 	// Use this for initialization
@@ -56,10 +57,13 @@ public class SiteUI : MonoBehaviour {
         // Create the buttons as soon as the game starts.
         CreateButtons();
 
-	}
-	
-	// Update is called once per frame
-	void Update ()
+        initialSelectedSiteIndex = siteButtons.Count / 2;
+        Debug.Log("initial selected site index: " + initialSelectedSiteIndex);
+
+    }
+
+    // Update is called once per frame
+    void Update ()
     {
 		
         // If the A button is pressed, select the active button.
@@ -146,7 +150,7 @@ public class SiteUI : MonoBehaviour {
             newButton.SetSite(site);
 
             // Determine the x position this button should go.
-            float newXPos = siteButtonStartPos.x + (i * (newButton.buttonSize.x + horizontalBuffer));
+            float newXPos = siteButtonStartPos.x - (allSites.Count/2 * (newButton.buttonSize.x + horizontalBuffer )) + (i * (newButton.buttonSize.x + horizontalBuffer));
 
             // Set the parent and position of the button.
             newButton.transform.SetParent(this.transform);
@@ -164,9 +168,10 @@ public class SiteUI : MonoBehaviour {
 
         }
 
-        // If there are any buttons, select the first one (show a highlight).
+        // If there are any buttons, select the middle one (show a highlight).
         if (siteButtons.Count > 0)
         {
+            selectedSiteIndex = siteButtons.Count / 2;
             siteButtons[selectedSiteIndex].SetButtonColor(buttonActiveColor);
             StartCoroutine(SetActivePOIWhenReady());
         }
@@ -249,6 +254,7 @@ public class SiteUI : MonoBehaviour {
         CatalystEarth.Hide();
         siteElementButton.associatedElementSet.NextElement();
         SceneManager.LoadScene("DataScene");
+        
     }
 
     // Move the site buttons in a direction. Direction should be -1 or 1
