@@ -572,15 +572,31 @@ public class Panorama : SiteElement
 public class SerializableCAVECam : SerializableSiteElement
 {
 
-    public string left_eye;
-    public string right_eye;
+    public SerializableCubemap cube1024;
+    public SerializableCubemap cube4096;
 
     public SerializableCAVECam(string leftEye, string rightEye, string description)
     {
 
-        this.left_eye = leftEye;
-        this.right_eye = rightEye;
+        cube1024 = new SerializableCubemap(leftEye, rightEye);
+        cube4096 = new SerializableCubemap(leftEye, rightEye);
+
         this.description = description;
 
     }
+}
+
+[System.Serializable]
+public class SerializableCubemap
+{
+
+    public string left;
+    public string right;
+
+    public SerializableCubemap(string leftEye, string rightEye)
+    {
+        this.left = leftEye;
+        this.right = rightEye;
+    }
+
 }
