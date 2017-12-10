@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public abstract class SiteElement : MonoBehaviour
 {
@@ -45,7 +46,9 @@ public abstract class SiteElement : MonoBehaviour
 
     public Coroutine Load()
     {
+ 
         return StartCoroutine(WaitForLoad());
+
     }
 
     public Coroutine Unload()
@@ -56,7 +59,21 @@ public abstract class SiteElement : MonoBehaviour
     private IEnumerator WaitForLoad()
     {
         StatusText.Show();
-        yield return StartCoroutine(LoadCoroutine());
+
+        if (string.IsNullOrEmpty(siteData.sceneName))
+        {
+            yield return StartCoroutine(LoadCoroutine());
+        }
+        else
+        {
+            AsyncOperation sceneLoad = SceneManager.LoadSceneAsync(siteData.sceneName);
+
+            while (!sceneLoad.isDone)
+            {
+                yield return null;
+            }
+        }
+
         loaded = true;
         StatusText.Hide();
     }
@@ -93,5 +110,8 @@ public abstract class SerializableSiteElement
     public int id;
     public string name;
     public string description;
+
+    // IF the scene string is present, Unity will just load the scene with the specified name, ignoring all other JSON elements.
+    public string sceneName;
 
 }

@@ -77,11 +77,14 @@ public class Site : MonoBehaviour
 [System.Serializable]
 public class SerializableSite
 {
+
+
     public string name;
     public string description;
     public float latitude;
     public float longitude;
 
+    public string scene;
     public SerializableCAVECam[] panos;
     public SerializableVideo[] videos;
     public SerializableModel[] models;
