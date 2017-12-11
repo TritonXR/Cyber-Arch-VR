@@ -17,6 +17,10 @@ public class SiteManager : MonoBehaviour {
     public Material poiActiveMat;
     public Material poiInactiveMat;
 
+    public float modelRotationSpeed = 3.0f;
+    public Material objectDefaultMat;
+    public Material objectTransparentMat;
+
 
     public static SiteElement activeSiteElement;
     public static SiteElementSet activeSiteElementSet;

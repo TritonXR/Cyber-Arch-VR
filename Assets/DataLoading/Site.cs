@@ -46,7 +46,7 @@ public class Site : MonoBehaviour
             dataSets.Add(panoSet);
         }
 
-        /*
+        
         if (siteData.models != null && siteData.models.Length > 0)
         {
 
@@ -56,7 +56,7 @@ public class Site : MonoBehaviour
             dataSets.Add(modelSet);
 
         }
-        */
+        
 
         // TODO: More supported data types.
 

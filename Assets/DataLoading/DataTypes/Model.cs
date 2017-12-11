@@ -9,8 +9,17 @@ public class Model : SiteElement
 {
     public GameObject model;
 
-    private float rotationSpeed = 0.1f;
     private bool rotate = true;
+
+    public void Update()
+    {
+
+        if (loaded && model != null && rotate)
+        {
+            model.transform.Rotate(Vector3.up, SiteManager.instance.modelRotationSpeed * Time.deltaTime);
+        }
+
+    }
 
     protected override IEnumerator ActivateCoroutine()
     {
@@ -39,6 +48,7 @@ public class Model : SiteElement
         SerializableModel modelData = siteData as SerializableModel;
 
         GameObject pivot = new GameObject("Position Pivot");
+        pivot.transform.parent = this.transform;
 
         Debug.Log("Loading Model");
         yield return null;
@@ -52,8 +62,10 @@ public class Model : SiteElement
             yield break;
         }
 
+        string fileExtension = Path.GetExtension(path);
 
-        if (Path.GetExtension(path) == ".dae")
+
+        if (fileExtension == ".dae")
         {
             string colladaString = File.ReadAllText(path);
             model = ColladaImporter.Import(colladaString);
@@ -66,7 +78,7 @@ public class Model : SiteElement
 
             yield return null;
         }
-        else if (Path.GetExtension(path) == ".obj")
+        else if (fileExtension == ".obj" || fileExtension == ".txt")
         {
 
             Debug.LogWarning("LOADING OBJ");
@@ -102,6 +114,10 @@ public class Model : SiteElement
                 obj.transform.parent = pivot.transform;
 
             }
+
+            CenterModel(pivot);
+            ScaleModelToFit();
+
         }
         else
         {
@@ -127,7 +143,6 @@ public class Model : SiteElement
     private void CenterModel(GameObject positionPivot)
     {
 
-
         Vector3 summedPositions = Vector3.zero;
 
         MeshRenderer[] allRenderers = model.GetComponentsInChildren<MeshRenderer>();
@@ -142,6 +157,87 @@ public class Model : SiteElement
         Vector3 distance = summedPositions - positionPivot.transform.position;
 
         positionPivot.transform.position -= distance;
+
+        MoveObjectToCamera();
+
+    }
+
+    private void MoveObjectToCamera()
+    {
+
+        model.transform.position = CAVECameraRig.playerViewpoint;
+
+
+        Vector3 newPos = model.transform.position;
+        newPos.z += 10.0f;
+
+        model.transform.position = newPos;
+        model.transform.LookAt(new Vector3(0.0f, 0.0f, CAVECameraRig.playerViewpoint.z), Vector3.up);
+
+
+    }
+
+    private void ScaleModelToFit()
+    {
+
+        float targetSize = 7.5f;
+
+        Vector3 actualSize = GetModelSize();
+
+        float largestBound = actualSize.x;
+        if (actualSize.y > largestBound)
+        {
+            largestBound = actualSize.y;
+        }
+        if (actualSize.z > largestBound)
+        {
+            largestBound = actualSize.z;
+        }
+
+        float scaleFactor = targetSize / largestBound;
+        Vector3 curScale = model.transform.localScale;
+
+        model.transform.localScale *= scaleFactor;
+    }
+
+
+    private Vector3 GetModelSize()
+    {
+
+        MeshRenderer[] allRenderers = model.GetComponentsInChildren<MeshRenderer>();
+
+
+        float minX = Mathf.Infinity, maxX = -Mathf.Infinity;
+        float minY = Mathf.Infinity, maxY = -Mathf.Infinity;
+        float minZ = Mathf.Infinity, maxZ = -Mathf.Infinity;
+
+        foreach (MeshRenderer renderer in allRenderers)
+        {
+
+            Vector3 center = renderer.bounds.center;
+            Vector3 extents = renderer.bounds.extents;
+
+            float minXBound = center.x - extents.x;
+            float maxXBound = center.x + extents.x;
+
+            float minYBound = center.y - extents.y;
+            float maxYBound = center.y + extents.y;
+
+            float minZBound = center.z - extents.z;
+            float maxZBound = center.z + extents.z;
+
+            if (minXBound < minX) minX = minXBound;
+            if (minYBound < minY) minY = minYBound;
+            if (minZBound < minZ) minZ = minZBound;
+
+            if (maxXBound > maxX) maxX = maxXBound;
+            if (maxYBound > maxY) maxY = maxYBound;
+            if (maxZBound > maxZ) maxZ = maxZBound;
+            
+        }
+
+        Vector3 size = new Vector3(maxX - minX, maxY - minY, maxZ - minZ);
+        return size;
 
     }
 
@@ -160,57 +256,16 @@ public class Model : SiteElement
 
     private IEnumerator LoadObjModel(string path, List<GameObject> objList)
     {
-        Material defaultMat = new Material(Shader.Find("Standard"));
-        ObjReader.ObjData loadData = ObjReader.use.ConvertFileAsync("file://" + Path.GetFullPath(path), true, defaultMat);
-
-        int sameFrames = 0;
-        float prevProgress = 0;
-
-        int cycleNum = 0;
+        Material defaultMat = SiteManager.instance.objectDefaultMat;//new Material(Shader.Find("Standard"));
+        Material defaultTransparent = SiteManager.instance.objectTransparentMat; //new Material(Shader.Find("Unlit/Transparent"));
+        ObjReader.ObjData loadData = ObjReader.use.ConvertFileAsync("file://" + Path.GetFullPath(path), true, defaultMat, defaultTransparent);
 
         while (!loadData.isDone)
         {
-
-            string progressDots = ".";
-            if (cycleNum > 0)
-            {
-                if (cycleNum > 1)
-                {
-                    progressDots += "..";
-                    cycleNum = 0;
-                }
-                else
-                {
-                    progressDots += ".";
-                    cycleNum++;
-                }
-            }
-            else
-            {
-                cycleNum++;
-            }
-
-            float progress = loadData.progress;
-
-
-            if (progress == prevProgress)
-            {
-                sameFrames++;
-            }
-            else
-            {
-                sameFrames = 0;
-                prevProgress = progress;
-            }
-
-            if (sameFrames > 90)
-            {
-                yield break;
-            }
-
             yield return null;
         }
 
+        //ObjReader.use.ConvertFile("file://" + Path.GetFullPath(path), true, defaultMat, defaultTransparent);
         if (loadData.gameObjects != null)
         {
 

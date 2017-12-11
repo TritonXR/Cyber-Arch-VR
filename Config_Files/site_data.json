@@ -10,7 +10,7 @@
         {
           "id": 5,
           "name": "LuxorTempleFirstCourtNight",
-		  "description": "This CAVEcam was shot in the Luxor Temple showing the First Court of Ramesses II and the 14th Century Mosque of Abu al-Haggag, at night.  See: http://www.calit2.net/newsroom/rss.php?id=1862 and http://en.wikipedia.org/wiki/Luxor_Temple",
+		  "description": "This CAVEcam was shot in the Luxor Temple showing the First Court of Ramesses II and the 14th Century Mosque of Abu al-Hagga                                                                                                              g, at night.  See: http://www.calit2.net/newsroom/rss.php?id=1862 and http://en.wikipedia.org/wiki/Luxor_Temple",
 
 		  "cube4096": {
 			"left": "Site_Data/5__LuxorTempleFirstCourtNight__left.tif",
@@ -46,22 +46,6 @@
 			"right": "Site_Data/15__LuxorMedinetHabuColumnsBlueCeiling__right.tif"
 		  },
           "description": "This CAVEcam was shot in the Temple of Ramesses III at Medinet Habu. Of particular interest is the existing colors on the columns and ceilings, and the clear graffiti from 1817 and 1818. The overexposed portions of the image were, of course, due to the bright sunlight, and inspired subsequent taking of multiple exposures to attempt high-dynamic range (HDR) captures of scenes like this. See: http://www.calit2.net/newsroom/rss.php?id=1862 and http://en.wikipedia.org/wiki/Medinet_Habu_(temple)"
-        }
-      ],
-      "sites3D": [
-        {
-          "id": 99,
-          "name": "testobj",
-          "filePath": "Site_Data/EastMound/Catal_East Mound.obj",
-          "description": "this is a test object"
-        }
-      ],
-      "models": [
-        {
-          "id": 9,
-          "name": "testmodel",
-          "filePath": "Site_Data/southwall/southwall.obj",
-          "description":  "testing a model"
         }
       ]
     },
@@ -139,6 +123,14 @@
           "name": "Mar Saba",
           "file": "mar_saba.ply",
           "description": "Mar Saba is a Greek Orthodox monastery located in the Judean desert. It dates back to the 5th century A.D"
+        }
+      ],
+	  "models": [
+        {
+          "id": 9,
+          "name": "testmodel",
+          "filePath": "D:/Unity Projects/Cyber-Arch-VR/Assets/ObjReader/Demos/Sample Files/Pig_obj.txt",
+          "description":  "testing a model"
         }
       ],
       "images": [
