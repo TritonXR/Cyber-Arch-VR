@@ -32,6 +32,7 @@ public class Panorama : SiteElement
     protected override IEnumerator ActivateCoroutine()
     {
 
+        Debug.Log("ACTIVATING INSIDE PANORAMA");
         List<Camera> allCams = CAVECameraRig.allCameras;
 
         foreach (Camera cam in allCams)

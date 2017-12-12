@@ -23,6 +23,8 @@ public class GamepadInput : MonoBehaviour {
     // Enables/disables debug mode & debug print statements.
     [SerializeField] private bool debug = false;
 
+    private static bool inputLocked = false;
+
     // Checks the time since there was last input.
     public static float timeSinceLastInput = 0.0f;
 
@@ -57,7 +59,14 @@ public class GamepadInput : MonoBehaviour {
     /// <returns>True if pressed down, false if not pressed down.</returns>
     public static bool GetDown(InputOption option)
     {
+
+        if (inputLocked)
+        {
+            return false;
+        }
+
         return downInputs.Contains(option);
+
     }
 
     /// <summary>
@@ -67,6 +76,12 @@ public class GamepadInput : MonoBehaviour {
     /// <returns>True if input is being held, false otherwise.</returns>
     public static bool Get(InputOption option)
     {
+
+        if (inputLocked)
+        {
+            return false;
+        }
+
         return heldInputs.Contains(option);
     }
 
@@ -77,6 +92,12 @@ public class GamepadInput : MonoBehaviour {
     /// <returns>True if input was released, false otherwise.</returns>
     public static bool GetUp(InputOption option)
     {
+
+        if (inputLocked)
+        {
+            return false;
+        }
+
         return releasedInputs.Contains(option);
     }
 
@@ -89,6 +110,12 @@ public class GamepadInput : MonoBehaviour {
     /// <returns>A float value representing the input value this frame. </returns>
     public static float GetInputValue(InputOption option)
     {
+
+        if (inputLocked)
+        {
+            return 0.0f;
+        }
+
         return Input.GetAxis(inputOptions[option]);
     }
 
@@ -206,5 +233,10 @@ public class GamepadInput : MonoBehaviour {
 
         releasedInputs.Clear();
 
+    }
+
+    public static void LockInput(bool locked)
+    {
+        inputLocked = locked;
     }
 }

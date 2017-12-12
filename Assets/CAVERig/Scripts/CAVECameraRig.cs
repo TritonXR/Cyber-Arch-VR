@@ -61,7 +61,7 @@ public class CAVECameraRig : MonoBehaviour
     public delegate void Toggle3DDelegate(bool is3D);
     public static Toggle3DDelegate on3DToggled;
 
-    private static Transform cameraRigTransform;
+    private static Transform CAVECameraRigTransform;
 
     public static Vector3 playerViewpoint
     {
@@ -121,7 +121,7 @@ public class CAVECameraRig : MonoBehaviour
         ActivateDisplays();
 
         // Make sure the cameras have this as a parent.
-        cameraRigTransform = this.transform;
+        CAVECameraRigTransform = this.transform;
 
         // Set the cameras to default positions.
         ResetCameraPositions();

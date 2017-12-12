@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
 
+    public bool loadAllDataOnStart = false;
+    public float minutesBeforeIdle = 5.0f;
+    public float secondsPerIdleScene = 10.0f;
     public GameObject user;
 
     [HideInInspector]
@@ -95,26 +98,35 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void GoHome()
+    public IEnumerator GoHome()
     {
         Debug.Log("GOING HOME");
         
         if (SiteManager.activeSiteElementSet != null)
         {
 
-            SiteManager.activeSiteElementSet.Deactivate();
+            yield return SiteManager.activeSiteElementSet.Deactivate();
 
         }
         
 
-        SceneManager.LoadScene(0);
+        AsyncOperation loadScene = SceneManager.LoadSceneAsync(0);
         // PlatformMonitor.ResetMonitorText();
+
+        while (!loadScene.isDone)
+        {
+            yield return null;
+        }
+
+        Debug.Log("MAIN SCENE LOADED");
 
         SiteManager siteManager = GetComponentInChildren<SiteManager>();
 
         CatalystEarth.Show();
 
         // siteManager.StartCoroutine(siteManager.PlacePOIsWhenReady());
+
+        Debug.Log("DONE GOING HOME");
 
     }
 
@@ -130,7 +142,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("HOME PRESSED");
             // Loads the first scene. Assumed to be the home scene.
-            GoHome();
+            StartCoroutine(GoHome());
         }
 
         if (GamepadInput.GetDown(InputOption.A_BUTTON))

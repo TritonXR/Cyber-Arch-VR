@@ -26,6 +26,11 @@ public abstract class SiteElement : MonoBehaviour
 
     public Coroutine Activate()
     {
+        Debug.Log("ACTIVATING");
+
+        CatalystEarth.Hide();
+        SceneManager.LoadScene("DataScene");
+
         Coroutine activeCoroutine = StartCoroutine(LoadThenActivate());
 
         SiteManager.activeSiteElement = this;
@@ -34,6 +39,7 @@ public abstract class SiteElement : MonoBehaviour
 
     public Coroutine Deactivate()
     {
+        Debug.Log("DEACTIVATING");
         Coroutine deactivateCoroutine = StartCoroutine(DeactivateCoroutine());
 
         if (SiteManager.activeSiteElement == this)
@@ -58,6 +64,16 @@ public abstract class SiteElement : MonoBehaviour
 
     private IEnumerator WaitForLoad()
     {
+
+        // Don't try to load two different elements at once. Could get messy.
+        while (SiteManager.loading)
+        {
+            yield return null;
+        }
+
+        GamepadInput.LockInput(true);
+        SiteManager.loading = true;
+
         StatusText.Show();
 
         if (string.IsNullOrEmpty(siteData.sceneName))
@@ -76,6 +92,9 @@ public abstract class SiteElement : MonoBehaviour
 
         loaded = true;
         StatusText.Hide();
+
+        GamepadInput.LockInput(false);
+        SiteManager.loading = false;
     }
 
     private IEnumerator WaitForUnload()

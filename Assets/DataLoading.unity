@@ -124,6 +124,7 @@ GameObject:
   - component: {fileID: 105427861}
   - component: {fileID: 105427860}
   - component: {fileID: 105427859}
+  - component: {fileID: 105427864}
   m_Layer: 0
   m_Name: Non-CAVE Camera
   m_TagString: MainCamera
@@ -200,6 +201,14 @@ Transform:
   m_Father: {fileID: 434322181}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!45 &105427864
+Skybox:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 105427858}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 0}
 --- !u!1001 &258358716
 Prefab:
   m_ObjectHideFlags: 0
@@ -1117,7 +1126,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 891682270}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -380, y: -342, z: 0}
+  m_LocalPosition: {x: -361.5, y: -291, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 1132658035}
@@ -1342,7 +1351,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1132658031}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 380, y: 342, z: 0}
+  m_LocalPosition: {x: 361.5, y: 291, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 891682271}
@@ -1523,6 +1532,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11442db236ceb48498f638a38d63ada2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loadAllDataOnStart: 0
+  minutesBeforeIdle: 0.1
+  secondsPerIdleScene: 10
   user: {fileID: 0}
   cameraRig: {fileID: 0}
   fadePlane: {fileID: 0}
@@ -1753,7 +1765,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1615837828
 RectTransform:
   m_ObjectHideFlags: 0

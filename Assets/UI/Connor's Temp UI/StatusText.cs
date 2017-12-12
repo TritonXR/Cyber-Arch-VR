@@ -33,6 +33,7 @@ public class StatusText : MonoBehaviour {
     {
         if (statusText != null)
         {
+            StatusText.Show();
             statusText.text = text;
 
         }

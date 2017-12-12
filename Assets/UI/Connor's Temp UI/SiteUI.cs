@@ -251,9 +251,7 @@ public class SiteUI : MonoBehaviour {
     // Select a data type. Just call the activate function to load that data.
     public void SelectSiteSetButton(SiteElementButton siteElementButton)
     {
-        CatalystEarth.Hide();
         siteElementButton.associatedElementSet.NextElement();
-        SceneManager.LoadScene("DataScene");
         
     }
 
