@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,13 +11,14 @@ public class GameManager : MonoBehaviour
     public const string dataDirectory = "./CAVEkiosk_SiteData";
     public const string cacheDirectory = "./Cached_Data";
     public const string dataJsonFile = dataDirectory + "/site_data.json";
+    public const string pathToCAVESettings = "./Config_Files/cave_settings.json";
+
 
     // Is this running in the cave?
     public static bool isCave = false;
 
     public static GameManager instance;
 
-    public bool loadAllDataOnStart = false;
     public float minutesBeforeIdle = 5.0f;
     public float secondsPerIdleScene = 10.0f;
     public GameObject user;
@@ -31,6 +33,8 @@ public class GameManager : MonoBehaviour
     public Object photoPrefabEditor;
 
     public Object labelPrefab;
+
+    public CAVESettings caveSettings;
 
     public enum State
     {
@@ -52,7 +56,10 @@ public class GameManager : MonoBehaviour
         HandleSingleton();
         SetupGameManagers();
 
+        string caveSettingsJSON = File.ReadAllText(pathToCAVESettings);
+        caveSettings = JsonUtility.FromJson<CAVESettings>(caveSettingsJSON);
 
+        GetComponentInChildren<SiteManager>().LoadSites(caveSettings.pathToDataJSONFile);
 
     }
 
@@ -154,4 +161,15 @@ public class GameManager : MonoBehaviour
         }
 
     }
+
+    [System.Serializable]
+    public class CAVESettings
+    {
+
+        public string pathToDataJSONFile;
+        public bool runIn3D = true;
+        public bool loadAllDataOnStart = true;
+
+    }
+
 }

@@ -12,7 +12,13 @@ public class CAVECameraRig : MonoBehaviour
 
     // Static bool to keep track of whether or not we're in 3D mode.
     public static bool is3D = false;
-    public bool using3D = true;
+    private bool using3D
+    {
+        get
+        {
+            return GameManager.instance.caveSettings.runIn3D;
+        }
+    }
 
     public static bool isCAVE
     {

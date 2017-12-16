@@ -7,7 +7,6 @@ public class StatusText : MonoBehaviour {
 
     private static Text statusText;
     private static GameObject parentCanvas;
-    private static Vector3 positionFromCameraToCanvas;
 
     public void Awake()
     {
@@ -29,7 +28,6 @@ public class StatusText : MonoBehaviour {
 
     public void Start()
     {
-        positionFromCameraToCanvas = parentCanvas.transform.position - CAVECameraRig.playerViewpoint;
         Hide();
 
     }
@@ -48,7 +46,6 @@ public class StatusText : MonoBehaviour {
     {
         if (statusText != null)
         {
-            UpdateCanvasPosition();
             statusText.gameObject.SetActive(true);
 
         }
@@ -59,21 +56,6 @@ public class StatusText : MonoBehaviour {
         if (statusText != null)
         {
             statusText.gameObject.SetActive(false);
-        }
-    }
-
-    public static void UpdateCanvasPosition()
-    {
-
-        parentCanvas.transform.position = CAVECameraRig.playerViewpoint + positionFromCameraToCanvas;
-
-    }
-
-    public void Update()
-    {
-        if (parentCanvas.transform.position != CAVECameraRig.playerViewpoint + positionFromCameraToCanvas)
-        {
-            UpdateCanvasPosition();
         }
     }
 }

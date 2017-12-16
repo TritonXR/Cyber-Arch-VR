@@ -8,9 +8,14 @@ public class SiteManager : MonoBehaviour {
 
     public static SiteManager instance;
 
-    public string pathToJSONConfigFile = "./Config_Files/data_path.json";
-
-    public static string pathToDataFolder = "";
+    public static string pathToDataFolder
+    {
+        get
+        {
+            string dataJSONFilePath = GameManager.instance.caveSettings.pathToDataJSONFile;
+            return Path.GetDirectoryName(dataJSONFilePath);
+        }
+    }
 
     [HideInInspector]
     public List<Site> sites;
@@ -69,36 +74,24 @@ public class SiteManager : MonoBehaviour {
         }
     }
 
-    void Awake()
+    public void Awake()
     {
-
         if (instance == null)
         {
             instance = this;
-
-            string pathFileJSON = File.ReadAllText(pathToJSONConfigFile);
-            PathToJSONData pathToJSONData = JsonUtility.FromJson<PathToJSONData>(pathFileJSON);
-
-
-            string dataPath = pathToJSONData.pathToDataJSONFile;
-
-
-            pathToDataFolder = Path.GetDirectoryName(dataPath);
-
-            Debug.LogWarning("PATH TO DATA FOLDER IS: " + pathToDataFolder);
-
-            LoadSites(dataPath);
-
-
+        }
+        else
+        {
+            GameObject.Destroy(this.gameObject);
         }
     }
 
 
-    void Start()
+    IEnumerator Start()
     {
-        if (GameManager.instance.loadAllDataOnStart)
+        if (GameManager.instance.caveSettings.loadAllDataOnStart)
         {
-            StartCoroutine(LoadAllSites());
+            yield return StartCoroutine(LoadAllSites());
         }
 
         StartCoroutine(CheckForIdle());
@@ -110,7 +103,7 @@ public class SiteManager : MonoBehaviour {
     {
         StatusText.SetText("Loading All Sites. Please Wait.");
         GamepadInput.LockInput(true);
-        if (GameManager.instance.loadAllDataOnStart)
+        if (GameManager.instance.caveSettings.loadAllDataOnStart)
         {
             for (int i = 0; i < sites.Count; i++)
             {
@@ -141,7 +134,7 @@ public class SiteManager : MonoBehaviour {
     public IEnumerator UnloadAllSites()
     {
 
-        if (GameManager.instance.loadAllDataOnStart)
+        if (GameManager.instance.caveSettings.loadAllDataOnStart)
         {
             foreach (Site site in sites)
             {
@@ -357,13 +350,6 @@ public class SiteManager : MonoBehaviour {
    
     }
 
-    [System.Serializable]
-    private class PathToJSONData
-    {
-
-        public string pathToDataJSONFile;
-
-    }
 }
 
 
