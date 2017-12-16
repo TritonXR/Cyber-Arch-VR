@@ -12,6 +12,7 @@ public class CAVECameraRig : MonoBehaviour
 
     // Static bool to keep track of whether or not we're in 3D mode.
     public static bool is3D = false;
+    public bool using3D = true;
 
     public static bool isCAVE
     {
@@ -125,6 +126,9 @@ public class CAVECameraRig : MonoBehaviour
 
         // Set the cameras to default positions.
         ResetCameraPositions();
+
+        StartCoroutine(UpdateScreens());
+
     }
 
     private void SetupScreens()
@@ -184,6 +188,8 @@ public class CAVECameraRig : MonoBehaviour
             newPlane.transform.localPosition = newPos;
 
             Camera newLeftCam = AddCamera(StereoTargetEyeMask.Left, i, leftEyeCameraParent.transform, newPlane.GetComponentsInChildren<Transform>()[1].gameObject);
+            newLeftCam.rect = new Rect(0.0f, 0.0f, 0.0f, 0.0f);
+
             Camera newRightCam = AddCamera(StereoTargetEyeMask.Right, i, rightEyeCameraParent.transform, newPlane.GetComponentsInChildren<Transform>()[1].gameObject);
 
             // Here we set the camera viewports based on screen rotations. The screens can't actually be "rotated" in Unity since that would rotate the cameras
@@ -193,9 +199,17 @@ public class CAVECameraRig : MonoBehaviour
             if (screenRotation < 0 && screenRotation < -45.0f)
             {
 
+                if (using3D)
+                {
+                    newRightCam.rect = new Rect(0.0f, 0.0f, 0.5f, 1.0f);
+                    newLeftCam.rect = new Rect(0.5f, 0.0f, 0.5f, 1.0f);
+                }
+                else
+                {
+                    newRightCam.rect = new Rect(0.0f, 0.0f, 1.0f, 1.0f);
+                }
                 // Reversed values since rotation is reversed.
-                newRightCam.rect = new Rect(0.0f, 0.0f, 0.5f, 1.0f);
-                newLeftCam.rect = new Rect(0.5f, 0.0f, 0.5f, 1.0f);
+
 
                 // Create the screen plane by swapping height and width, since it's rotated.
                 newPlane.transform.localScale = new Vector3(float.Parse(screens[i].height), float.Parse(screens[i].width), 1.0f);
@@ -207,8 +221,17 @@ public class CAVECameraRig : MonoBehaviour
             {
 
                 // Normal values, no reversal.
-                newLeftCam.rect = new Rect(0.0f, 0.0f, 0.5f, 1.0f);
-                newRightCam.rect = new Rect(0.5f, 0.0f, 0.5f, 1.0f);
+                if (using3D)
+                {
+                    newLeftCam.rect = new Rect(0.0f, 0.0f, 0.5f, 1.0f);
+                    newRightCam.rect = new Rect(0.5f, 0.0f, 0.5f, 1.0f);
+                }
+                else
+                {
+                    newRightCam.rect = new Rect(0.0f, 0.0f, 1.0f, 1.0f);
+
+                }
+
 
                 // Create the screen plane by swapping height and width, since it's rotated.
                 newPlane.transform.localScale = new Vector3(float.Parse(screens[i].height), float.Parse(screens[i].width), 1.0f);
@@ -222,8 +245,17 @@ public class CAVECameraRig : MonoBehaviour
                 // UNTESTED ASSUMPTION: Assuming LEFT EYE is supposed to be UPPER HALF of screen.
                 // If this is NOT the case, swap the below code with the code in the 180 degree if statement.
 
-                newLeftCam.rect = new Rect(0.0f, 0.5f, 1.0f, 0.5f);
-                newRightCam.rect = new Rect(0.0f, 0.5f, 0.0f, 0.5f);
+                if (using3D)
+                {
+                    newLeftCam.rect = new Rect(0.0f, 0.5f, 1.0f, 0.5f);
+                    newRightCam.rect = new Rect(0.0f, 0.5f, 0.0f, 0.5f);
+                }
+
+                else
+                {
+                    newRightCam.rect = new Rect(0.0f, 0.0f, 1.0f, 1.0f);
+                }
+
 
             }
 
@@ -232,11 +264,20 @@ public class CAVECameraRig : MonoBehaviour
             {
 
                 // UNTESTED ASSUMPTION: Assuming LEFT EYE is supposed to be UPPER HALF of screen normally (without rotation).
+                
+                if (using3D)
+                {
+                    newRightCam.rect = new Rect(0.0f, 0.5f, 1.0f, 0.5f);
+                    newLeftCam.rect = new Rect(0.0f, 0.5f, 0.0f, 0.5f);
+                }
+                else
+                {
+                    newRightCam.rect = new Rect(0.0f, 0.0f, 1.0f, 1.0f);
 
-                newRightCam.rect = new Rect(0.0f, 0.5f, 1.0f, 0.5f);
-                newLeftCam.rect = new Rect(0.0f, 0.5f, 0.0f, 0.5f);
+                }
+
             }
-            
+
             // Set the parents of each camera.
             newLeftCam.transform.parent = leftEyeCameraParent.transform;
             newRightCam.transform.parent = rightEyeCameraParent.transform;
@@ -371,6 +412,15 @@ public class CAVECameraRig : MonoBehaviour
             Vector3 newPosition = camera.transform.localPosition;
             newPosition.x = xVal;
             camera.transform.localPosition = newPosition;
+        }
+    }
+
+    public IEnumerator UpdateScreens()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(5.0f);
+            ActivateDisplays();
         }
     }
 }

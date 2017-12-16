@@ -33,8 +33,18 @@ public class Panorama : SiteElement
     {
 
         Debug.Log("ACTIVATING INSIDE PANORAMA");
-        List<Camera> allCams = CAVECameraRig.allCameras;
 
+        UpdateCameraSkyboxes(CAVECameraRig.is3D);
+
+        CAVECameraRig.on3DToggled += UpdateCameraSkyboxes;
+       
+
+        yield return null;
+    }
+
+    public void UpdateCameraSkyboxes(bool is3D)
+    {
+        List<Camera> allCams = CAVECameraRig.allCameras;
         foreach (Camera cam in allCams)
         {
 
@@ -49,7 +59,7 @@ public class Panorama : SiteElement
 
             camSkybox.enabled = true;
 
-            if (cam.stereoTargetEye == StereoTargetEyeMask.Left)
+            if (CAVECameraRig.is3D && cam.stereoTargetEye == StereoTargetEyeMask.Left)
             {
 
                 camSkybox.material = leftEye;
@@ -62,12 +72,12 @@ public class Panorama : SiteElement
 
             }
         }
-
-        yield return null;
     }
 
     protected override IEnumerator DeactivateCoroutine()
     {
+
+        CAVECameraRig.on3DToggled -= UpdateCameraSkyboxes;
 
         List<Camera> allCams = CAVECameraRig.allCameras;
 
@@ -96,13 +106,13 @@ public class Panorama : SiteElement
 
         if (camData.cube4096 == null || string.IsNullOrEmpty(camData.cube4096.left) || string.IsNullOrEmpty(camData.cube4096.right))
         {
-            leftEyePath = camData.cube1024.left;
-            rightEyePath = camData.cube1024.right;
+            leftEyePath = GetAbsolutePath(camData.cube1024.left);
+            rightEyePath = GetAbsolutePath(camData.cube1024.right);
         }
         else
         {
-            leftEyePath = camData.cube4096.left;
-            rightEyePath = camData.cube4096.right;
+            leftEyePath = GetAbsolutePath(camData.cube4096.left);
+            rightEyePath = GetAbsolutePath(camData.cube4096.right);
         }
 
 

@@ -10,6 +10,8 @@ public class SiteManager : MonoBehaviour {
 
     public string pathToJSONConfigFile = "./Config_Files/data_path.json";
 
+    public static string pathToDataFolder = "";
+
     [HideInInspector]
     public List<Site> sites;
     // private GameManager gameManager;
@@ -77,7 +79,13 @@ public class SiteManager : MonoBehaviour {
             string pathFileJSON = File.ReadAllText(pathToJSONConfigFile);
             PathToJSONData pathToJSONData = JsonUtility.FromJson<PathToJSONData>(pathFileJSON);
 
+
             string dataPath = pathToJSONData.pathToDataJSONFile;
+
+
+            pathToDataFolder = Path.GetDirectoryName(dataPath);
+
+            Debug.LogWarning("PATH TO DATA FOLDER IS: " + pathToDataFolder);
 
             LoadSites(dataPath);
 

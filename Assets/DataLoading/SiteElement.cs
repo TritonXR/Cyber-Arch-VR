@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public abstract class SiteElement : MonoBehaviour
 {
@@ -119,6 +120,25 @@ public abstract class SiteElement : MonoBehaviour
     protected void PrintIncorrectTypeError(string siteName, string dataType)
     {
         Debug.LogErrorFormat("Could not load site element {0} at site {1}: Incorrect data passed to Activate method", dataType, siteName);
+    }
+
+    public string GetAbsolutePath(string relativeDataPath)
+    {
+
+        string filePath = "/" + SiteManager.pathToDataFolder + "/" + relativeDataPath;
+
+        if (!File.Exists(SiteManager.pathToDataFolder + "/" + "config_3.json"))
+        {
+            Debug.LogWarning("Could not find config file");
+        }
+
+        if (!File.Exists(filePath))
+        {
+            Debug.LogError("Could not find data file at: " + filePath);
+        }
+
+        return filePath;
+
     }
 }
 

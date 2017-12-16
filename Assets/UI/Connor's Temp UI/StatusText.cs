@@ -14,18 +14,23 @@ public class StatusText : MonoBehaviour {
         if (statusText == null)
         {
             parentCanvas = GetComponentInParent<Canvas>().gameObject;
-            positionFromCameraToCanvas = parentCanvas.transform.position - Camera.main.transform.position;
 
             statusText = GetComponent<Text>();
             DontDestroyOnLoad(gameObject);
             DontDestroyOnLoad(parentCanvas);
-            Hide();
         }
         else
         {
             GameObject.Destroy(this.gameObject);
 
         }
+
+    }
+
+    public void Start()
+    {
+        positionFromCameraToCanvas = parentCanvas.transform.position - CAVECameraRig.playerViewpoint;
+        Hide();
 
     }
 
@@ -60,13 +65,13 @@ public class StatusText : MonoBehaviour {
     public static void UpdateCanvasPosition()
     {
 
-        parentCanvas.transform.position = Camera.main.transform.position + positionFromCameraToCanvas;
+        parentCanvas.transform.position = CAVECameraRig.playerViewpoint + positionFromCameraToCanvas;
 
     }
 
     public void Update()
     {
-        if (parentCanvas.transform.position != Camera.main.transform.position + positionFromCameraToCanvas)
+        if (parentCanvas.transform.position != CAVECameraRig.playerViewpoint + positionFromCameraToCanvas)
         {
             UpdateCanvasPosition();
         }
