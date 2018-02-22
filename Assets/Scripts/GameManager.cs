@@ -130,7 +130,8 @@ public class GameManager : MonoBehaviour
         SiteManager siteManager = GetComponentInChildren<SiteManager>();
 
         CatalystEarth.Show();
-
+        Logo.Show();
+        ControlPanel.SetHomePanel();
         // siteManager.StartCoroutine(siteManager.PlacePOIsWhenReady());
 
         Debug.Log("DONE GOING HOME");

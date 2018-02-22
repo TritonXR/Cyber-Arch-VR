@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class CatalystEarth : MonoBehaviour {
 
+   
+
     private static float planetRadius;
     public static Transform earthTransform;
 

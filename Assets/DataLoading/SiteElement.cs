@@ -6,6 +6,7 @@ using System.IO;
 
 public abstract class SiteElement : MonoBehaviour
 {
+    //public GameObject caveLogo;
 
     public bool loaded = false;
     public bool failed = false;
@@ -29,8 +30,11 @@ public abstract class SiteElement : MonoBehaviour
     {
         Debug.Log("ACTIVATING");
 
+        Logo.Hide();
+
         CatalystEarth.Hide();
         SceneManager.LoadScene("DataScene");
+        ControlPanel.SetCaveCamPanel();
 
         Coroutine activeCoroutine = StartCoroutine(LoadThenActivate());
 
