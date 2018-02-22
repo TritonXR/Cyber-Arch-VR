@@ -141,7 +141,7 @@ public class GameManager : MonoBehaviour
     public void Update()
     {
 
-        if (GamepadInput.GetDown(InputOption.BACK_BUTTON) && CAVECameraRig.instance != null)
+        if (GamepadInput.GetDown(InputOption.Y_BUTTON) && CAVECameraRig.instance != null)
         {
             CAVECameraRig.instance.Toggle3D();
         }

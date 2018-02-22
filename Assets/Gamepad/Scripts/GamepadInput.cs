@@ -11,6 +11,8 @@ public enum InputOption
     RIGHT_STICK_VERTICAL,
     A_BUTTON,
     B_BUTTON,
+    X_BUTTON,
+    Y_BUTTON,
     LEFT_TRIGGER,
     RIGHT_TRIGGER,
     START_BUTTON,
@@ -40,11 +42,13 @@ public class GamepadInput : MonoBehaviour {
         { InputOption.RIGHT_STICK_VERTICAL,   "RightStickVertical"   },
         { InputOption.A_BUTTON,               "Xbox A"               },
         { InputOption.B_BUTTON,               "Xbox B"               },
+        { InputOption.X_BUTTON,               "Xbox X"               },
+        { InputOption.Y_BUTTON,               "Xbox Y"               },
         { InputOption.LEFT_TRIGGER,           "LeftTrigger"          },
         { InputOption.RIGHT_TRIGGER,          "RightTrigger"         },
         { InputOption.START_BUTTON,           "Xbox Start"           },
-        { InputOption.BACK_BUTTON,            "Xbox Back"            }
-
+        { InputOption.BACK_BUTTON,            "Xbox Back"            },
+        
     };
 
     // Lists to keep track of active inputs.
